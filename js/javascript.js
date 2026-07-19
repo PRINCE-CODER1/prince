@@ -1,197 +1,298 @@
-gsap.registerPlugin(ScrollTrigger);
+const prefersReducedMotion = window.matchMedia(
+  "(prefers-reduced-motion: reduce)",
+).matches;
+const isFinePointer = window.matchMedia("(pointer: fine)").matches;
 
-const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-const isDesktop = window.matchMedia("(pointer: fine) and (min-width: 761px)").matches;
+if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
-if (typeof Lenis !== "undefined" && !prefersReducedMotion) {
+function bootSmoothScroll() {
+  if (
+    prefersReducedMotion ||
+    typeof Lenis === "undefined" ||
+    typeof gsap === "undefined" ||
+    typeof ScrollTrigger === "undefined"
+  )
+    return;
+
   const lenis = new Lenis({
-    duration: 0.9,
+    duration: 0.95,
     smoothWheel: true,
-    wheelMultiplier: 0.85,
+    wheelMultiplier: 0.8,
+    touchMultiplier: 1.15,
   });
 
+  lenis.on("scroll", ScrollTrigger.update);
   gsap.ticker.add((time) => lenis.raf(time * 1000));
   gsap.ticker.lagSmoothing(0);
 }
 
-const cursor = document.querySelector(".cursor");
-const main = document.querySelector(".main");
+function bootCursor() {
+  const cursor = document.querySelector(".cursor");
+  if (
+    !cursor ||
+    !isFinePointer ||
+    prefersReducedMotion ||
+    typeof gsap === "undefined"
+  ) {
+    if (cursor) cursor.hidden = true;
+    return;
+  }
 
-if (cursor && main && isDesktop && !prefersReducedMotion) {
   const setX = gsap.quickSetter(cursor, "x", "px");
   const setY = gsap.quickSetter(cursor, "y", "px");
-  let cursorX = 0;
-  let cursorY = 0;
-  let ticking = false;
+  let x = window.innerWidth / 2;
+  let y = window.innerHeight / 2;
 
-  main.addEventListener(
+  window.addEventListener(
     "pointermove",
     (event) => {
-      cursorX = event.clientX;
-      cursorY = event.clientY;
-
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          setX(cursorX);
-          setY(cursorY);
-          ticking = false;
-        });
-        ticking = true;
-      }
+      x = event.clientX;
+      y = event.clientY;
     },
-    { passive: true }
+    { passive: true },
   );
-} else if (cursor) {
-  cursor.hidden = true;
-}
 
-function splitText(selector) {
-  const element = document.querySelector(selector);
-  if (!element) return [];
-
-  const fragment = document.createDocumentFragment();
-  [...element.textContent].forEach((letter) => {
-    const span = document.createElement("span");
-    span.textContent = letter;
-    fragment.appendChild(span);
+  gsap.ticker.add(() => {
+    setX(x);
+    setY(y);
   });
 
-  element.replaceChildren(fragment);
-  return element.querySelectorAll("span");
-}
+  document.querySelectorAll(".magnetic").forEach((element) => {
+    element.addEventListener("pointermove", (event) => {
+      const rect = element.getBoundingClientRect();
+      gsap.to(element, {
+        x: (event.clientX - rect.left - rect.width / 2) * 0.25,
+        y: (event.clientY - rect.top - rect.height / 2) * 0.25,
+        duration: 0.45,
+        ease: "power3.out",
+      });
+    });
 
-if (!prefersReducedMotion) {
-  const hero = gsap.timeline({
-    scrollTrigger: {
-      trigger: ".page-1",
-      start: "top top",
-      end: "bottom top",
-      scrub: 0.7,
-      pin: true,
-      anticipatePin: 1,
-    },
-    defaults: { ease: "none" },
-  });
-
-  hero
-    .to("#img-1", { xPercent: 18 }, "hero")
-    .to("#img-2", { xPercent: -18 }, "hero")
-    .to("#img-3", { xPercent: 22 }, "hero")
-    .to("#img-4", { xPercent: -22 }, "hero")
-    .to("#fence-img-1", { xPercent: 10 }, "hero")
-    .to("#fence-img-2", { xPercent: -10 }, "hero")
-    .to("#fence-img-3", { x: () => window.innerWidth * 1.05, filter: "brightness(20%)" }, "hero")
-    .to("#fence-img-4, #fence-img-7", { yPercent: -50 }, "hero")
-    .to("#fence-img-5, #fence-img-9", { yPercent: -44, xPercent: 8 }, "hero")
-    .to("#fence-img-6", { yPercent: -62 }, "hero")
-    .to("#fence-img-8", { yPercent: -50, xPercent: 4 }, "hero")
-    .to("#fence-img-10", { yPercent: -60, xPercent: -2, scale: 1.1 }, "hero")
-    .to(".page-1-img img", { scale: 1.12 }, "hero")
-    .to(".planet img", { yPercent: -45, rotate: 30 }, "hero")
-    .to(".meteor img", { y: () => window.innerHeight * 1.5, x: () => -window.innerWidth * 1.4 }, "hero")
-    .to(".landing-para", { y: -160, opacity: 1 }, "hero");
-
-  gsap.to(".strategy", {
-    backgroundColor: "#fff",
-    scrollTrigger: {
-      trigger: ".strategy",
-      start: "bottom 20%",
-      end: "bottom top",
-      scrub: 0.7,
-    },
-  });
-
-  gsap.to(".strat-1 h1", {
-    color: "#000",
-    scrollTrigger: {
-      trigger: ".strategy",
-      start: "top top",
-      end: "bottom -40%",
-      scrub: 0.7,
-    },
-  });
-
-  gsap.to(".strategy svg", {
-    xPercent: 680,
-    rotate: 90,
-    color: "#000",
-    scrollTrigger: {
-      trigger: ".strategy",
-      start: "top top",
-      end: "bottom -40%",
-      scrub: 0.7,
-    },
-  });
-
-  gsap.to(".name", {
-    y: -40,
-    scrollTrigger: {
-      start: "30% 10%",
-      end: "top top",
-      scrub: 0.7,
-    },
-  });
-
-  [".part-1>p", ".part-3>p"].forEach((selector) => {
-    const letters = splitText(selector);
-    gsap.to(letters, {
-      scrollTrigger: {
-        trigger: selector,
-        start: "top 80%",
-        end: "bottom top",
-        scrub: 1,
-      },
-      color: "#fff",
-      stagger: 0.02,
+    element.addEventListener("pointerleave", () => {
+      gsap.to(element, {
+        x: 0,
+        y: 0,
+        duration: 0.6,
+        ease: "elastic.out(1, 0.35)",
+      });
     });
   });
 
-  const marquee = gsap.timeline({
-    scrollTrigger: {
-      trigger: ".part-2",
-      start: "top 90%",
-      end: "bottom top",
-      scrub: 0.3,
-    },
-    defaults: { ease: "none" },
-  });
-
-  marquee.to(".stripe-l", { xPercent: -16 }, "loop").to(".stripe-r", { xPercent: 20 }, "loop");
-
-  const zoom = gsap.timeline({
-    scrollTrigger: {
-      trigger: ".zooming",
-      start: "50% 50%",
-      end: "150% 50%",
-      scrub: 0.7,
-      pin: true,
-      anticipatePin: 1,
-    },
-  });
-
-  zoom
-    .to(".top-cnt", { rotateX: 110, opacity: 0, duration: 1.5 }, "rotate")
-    .to(".btm-cnt", { rotateX: -110, opacity: 0, duration: 1.5 }, "rotate")
-    .to(".img", { width: "100%", height: "100%", borderRadius: 0, duration: 5 }, "rotate");
-} else {
-  document.querySelector(".landing-para")?.style.setProperty("opacity", "1");
-}
-
-if (cursor && isDesktop) {
-  document.querySelectorAll(".hov-1").forEach((item) => {
-    item.addEventListener("mouseenter", () => {
-      const image = item.getAttribute("data-image");
-      cursor.style.width = "300px";
-      cursor.style.height = "300px";
-      cursor.style.borderRadius = "0";
-      cursor.style.backgroundImage = `url(${image})`;
+  document.querySelectorAll(".work-card").forEach((card) => {
+    card.addEventListener("mouseenter", () => {
+      cursor.style.width = "280px";
+      cursor.style.height = "180px";
+      cursor.style.borderRadius = "24px";
+      cursor.style.backgroundImage = `url(${card.dataset.image})`;
     });
 
-    item.addEventListener("mouseleave", () => {
-      cursor.style.width = "28px";
-      cursor.style.height = "28px";
+    card.addEventListener("mouseleave", () => {
+      cursor.style.width = "24px";
+      cursor.style.height = "24px";
       cursor.style.borderRadius = "50%";
       cursor.style.backgroundImage = "none";
     });
   });
 }
+
+function splitLetters(element) {
+  const fragment = document.createDocumentFragment();
+  [...element.textContent].forEach((character) => {
+    const span = document.createElement("span");
+    span.textContent = character;
+    fragment.appendChild(span);
+  });
+  element.replaceChildren(fragment);
+  return element.querySelectorAll("span");
+}
+
+function bootMotion() {
+  if (
+    prefersReducedMotion ||
+    typeof gsap === "undefined" ||
+    typeof ScrollTrigger === "undefined"
+  )
+    return;
+
+  gsap.from(".site-nav", {
+    y: -40,
+    autoAlpha: 0,
+    duration: 1,
+    ease: "power3.out",
+  });
+  gsap.from(".hero h1 span", {
+    yPercent: 115,
+    rotate: 2,
+    autoAlpha: 0,
+    stagger: 0.08,
+    duration: 1.2,
+    ease: "power4.out",
+  });
+  gsap.from(".hero__footer, .hero__metrics", {
+    y: 28,
+    autoAlpha: 0,
+    delay: 0.45,
+    duration: 1,
+    ease: "power3.out",
+  });
+
+  gsap.to(".hero__backdrop img", {
+    scale: 1.16,
+    scrollTrigger: {
+      trigger: ".hero",
+      start: "top top",
+      end: "bottom top",
+      scrub: 0.8,
+    },
+  });
+
+  document.querySelectorAll(".reveal-text").forEach((element) => {
+    gsap.to(splitLetters(element), {
+      color: "#f5efe6",
+      stagger: 0.01,
+      scrollTrigger: {
+        trigger: element,
+        start: "top 78%",
+        end: "bottom 45%",
+        scrub: 0.8,
+      },
+    });
+  });
+
+  gsap.to(".marquee__track:not(.marquee__track--reverse)", {
+    xPercent: -18,
+    ease: "none",
+    scrollTrigger: {
+      trigger: ".marquee",
+      start: "top bottom",
+      end: "bottom top",
+      scrub: 0.4,
+    },
+  });
+
+  gsap.to(".marquee__track--reverse", {
+    xPercent: 14,
+    ease: "none",
+    scrollTrigger: {
+      trigger: ".marquee",
+      start: "top bottom",
+      end: "bottom top",
+      scrub: 0.4,
+    },
+  });
+
+  gsap.utils
+    .toArray(".manifesto article, .work-card, .process__steps div")
+    .forEach((element) => {
+      gsap.from(element, {
+        y: 50,
+        autoAlpha: 0,
+        duration: 0.9,
+        ease: "power3.out",
+        scrollTrigger: { trigger: element, start: "top 86%" },
+      });
+    });
+
+  gsap.from(".feature__media", {
+    clipPath: "inset(12% round 42px)",
+    scale: 0.94,
+    scrollTrigger: {
+      trigger: ".feature",
+      start: "top 75%",
+      end: "center center",
+      scrub: 0.8,
+    },
+  });
+}
+
+function bootThreeScene() {
+  const canvas = document.querySelector("#webgl");
+  if (
+    !canvas ||
+    typeof THREE === "undefined" ||
+    typeof ScrollTrigger === "undefined" ||
+    prefersReducedMotion
+  )
+    return;
+
+  const renderer = new THREE.WebGLRenderer({
+    canvas,
+    alpha: true,
+    antialias: false,
+    powerPreference: "high-performance",
+  });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+  camera.position.z = 8;
+
+  const geometry = new THREE.IcosahedronGeometry(1.75, 3);
+  const material = new THREE.MeshStandardMaterial({
+    color: 0xff6f3d,
+    roughness: 0.42,
+    metalness: 0.28,
+    wireframe: true,
+  });
+  const orb = new THREE.Mesh(geometry, material);
+  scene.add(orb);
+
+  const stars = new THREE.Points(
+    new THREE.BufferGeometry().setAttribute(
+      "position",
+      new THREE.Float32BufferAttribute(
+        Array.from({ length: 900 }, () => (Math.random() - 0.5) * 22),
+        3,
+      ),
+    ),
+    new THREE.PointsMaterial({
+      color: 0xf5efe6,
+      size: 0.018,
+      transparent: true,
+      opacity: 0.72,
+    }),
+  );
+  scene.add(stars);
+  scene.add(new THREE.AmbientLight(0xffffff, 0.65));
+  const light = new THREE.DirectionalLight(0x7f9cff, 2.3);
+  light.position.set(3, 4, 5);
+  scene.add(light);
+
+  const resize = () => {
+    const width = window.innerWidth;
+    const height = window.innerHeight;
+    renderer.setSize(width, height, false);
+    camera.aspect = width / height;
+    camera.updateProjectionMatrix();
+  };
+  resize();
+  window.addEventListener("resize", resize, { passive: true });
+
+  let scrollProgress = 0;
+  ScrollTrigger.create({
+    trigger: document.body,
+    start: "top top",
+    end: "bottom bottom",
+    onUpdate: (self) => {
+      scrollProgress = self.progress;
+    },
+  });
+
+  renderer.setAnimationLoop((time) => {
+    const t = time * 0.001;
+    orb.rotation.x = t * 0.18 + scrollProgress * 2.2;
+    orb.rotation.y = t * 0.26;
+    orb.position.y = Math.sin(t * 0.7) * 0.18;
+    stars.rotation.y = t * 0.025;
+    renderer.render(scene, camera);
+  });
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+  bootSmoothScroll();
+  bootCursor();
+  bootMotion();
+  bootThreeScene();
+});
