@@ -7,6 +7,9 @@
       name="description"
       content="Prince Kumar is a digital designer crafting atmospheric, responsive web experiences."
     />
+    <link rel="preload" href="css/font-family/Roboto-Black.woff" as="font" type="font/woff" crossorigin />
+    <link rel="preload" href="css/font-family/Roboto-Regular.woff" as="font" type="font/woff" crossorigin />
+    <link rel="preload" href="images/night.webp" as="image" fetchpriority="high" />
     <link rel="stylesheet" href="css/style.css" />
     <link rel="icon" type="image/png" href="images/mars.png" />
     <title>Prince Kumar — Digital Experience Designer</title>
@@ -18,7 +21,7 @@
     <main class="main">
       <section class="page-1" id="home" aria-label="Hero section">
         <div class="page-1-img">
-          <img src="images/night.webp" alt="Moonlit landscape background" />
+          <img src="images/night.webp" alt="Moonlit landscape background" fetchpriority="high" decoding="async" />
         </div>
         <nav class="navbar" aria-label="Primary navigation">
           <a class="logo" href="#home" aria-label="Prince Kumar home">
@@ -48,22 +51,22 @@
           <img id="meteor-img" src="images/meteor1.png" alt="" />
         </div>
         <div class="fence" aria-hidden="true">
-          <img id="fence-img-1" src="images/fence.png" alt="" />
-          <img id="fence-img-2" src="images/fence.png" alt="" />
-          <img id="fence-img-3" src="images/witch.gif" alt="" />
-          <img id="fence-img-4" src="images/tree.png" alt="" />
-          <img id="fence-img-5" src="images/tree.png" alt="" />
-          <img id="fence-img-6" src="images/tree.png" alt="" />
-          <img id="fence-img-7" src="images/tree.png" alt="" />
-          <img id="fence-img-8" src="images/tree.png" alt="" />
-          <img id="fence-img-9" src="images/tree.png" alt="" />
-          <img id="fence-img-10" src="images/lantern.png" alt="" />
+          <img id="fence-img-1" src="images/fence.png" alt="" loading="lazy" decoding="async" />
+          <img id="fence-img-2" src="images/fence.png" alt="" loading="lazy" decoding="async" />
+          <img id="fence-img-3" src="images/witch.gif" alt="" loading="lazy" decoding="async" />
+          <img id="fence-img-4" src="images/tree.png" alt="" loading="lazy" decoding="async" />
+          <img id="fence-img-5" src="images/tree.png" alt="" loading="lazy" decoding="async" />
+          <img id="fence-img-6" src="images/tree.png" alt="" loading="lazy" decoding="async" />
+          <img id="fence-img-7" src="images/tree.png" alt="" loading="lazy" decoding="async" />
+          <img id="fence-img-8" src="images/tree.png" alt="" loading="lazy" decoding="async" />
+          <img id="fence-img-9" src="images/tree.png" alt="" loading="lazy" decoding="async" />
+          <img id="fence-img-10" src="images/lantern.png" alt="" loading="lazy" decoding="async" />
         </div>
         <div class="grass" aria-hidden="true">
-          <img id="img-1" src="images/grass.png" alt="" />
-          <img id="img-2" src="images/grass.png" alt="" />
-          <img id="img-3" src="images/grass.png" alt="" />
-          <img id="img-4" src="images/grass.png" alt="" />
+          <img id="img-1" src="images/grass.png" alt="" loading="lazy" decoding="async" />
+          <img id="img-2" src="images/grass.png" alt="" loading="lazy" decoding="async" />
+          <img id="img-3" src="images/grass.png" alt="" loading="lazy" decoding="async" />
+          <img id="img-4" src="images/grass.png" alt="" loading="lazy" decoding="async" />
         </div>
       </section>
 
@@ -95,7 +98,7 @@
           </div>
         </div>
         <div class="img">
-          <video src="videos/illustration.mp4" autoplay muted loop playsinline></video>
+          <video src="videos/illustration.mp4" autoplay muted loop playsinline preload="metadata" poster="images/illu.webp"></video>
         </div>
         <div class="btm-con">
           <div class="btm-cnt">
@@ -132,13 +135,13 @@
 
       <section class="jee-main" aria-label="Interactive identity list">
         <div class="hover-img">
-          <div class="hov-1" data-image="https://images.unsplash.com/photo-1517330486404-33542d376afd?w=900&auto=format&fit=crop&q=80">
+          <div class="hov-1" data-image="images/strat.webp">
             <span>01</span><h2>Prince</h2><p>Visual direction</p>
           </div>
-          <div class="hov-1" data-image="https://images.unsplash.com/photo-1703633058874-6ed4725e4595?w=900&auto=format&fit=crop&q=80">
+          <div class="hov-1" data-image="images/illu.webp">
             <span>02</span><h2>Kumar</h2><p>Digital storytelling</p>
           </div>
-          <div class="hov-1" data-image="https://images.unsplash.com/photo-1580584126903-c17d41830450?w=900&auto=format&fit=crop&q=80">
+          <div class="hov-1" data-image="images/coffee.webp">
             <span>03</span><h2>Coder</h2><p>Front-end craft</p>
           </div>
         </div>
@@ -147,9 +150,9 @@
       <section class="strategy" aria-label="Design pillars">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14.5895 16.0032L5.98291 7.39664L7.39712 5.98242L16.0037 14.589V7.00324H18.0037V18.0032H7.00373V16.0032H14.5895Z"></path></svg>
         <p class="section-label">Creative principles</p>
-        <div class="strategy-txt"><img src="images/strat.webp" alt="" /><div class="strat-1"><h1>Empowerment</h1><h1>Empowerment</h1></div><img src="images/blue.webp" alt="" /></div>
-        <div class="strategy-txt"><img src="images/illu.webp" alt="" /><div class="strat-1"><h1>Innovation</h1><h1>Innovation</h1></div><img src="images/man.webp" alt="" /></div>
-        <div class="strategy-txt"><img src="images/coffee.webp" alt="" /><div class="strat-1"><h1>Elevation</h1><h1>Elevation</h1></div><img src="images/leaves.webp" alt="" /></div>
+        <div class="strategy-txt"><img src="images/strat.webp" alt="" loading="lazy" decoding="async" /><div class="strat-1"><h1>Empowerment</h1><h1>Empowerment</h1></div><img src="images/blue.webp" alt="" loading="lazy" decoding="async" /></div>
+        <div class="strategy-txt"><img src="images/illu.webp" alt="" loading="lazy" decoding="async" /><div class="strat-1"><h1>Innovation</h1><h1>Innovation</h1></div><img src="images/man.webp" alt="" loading="lazy" decoding="async" /></div>
+        <div class="strategy-txt"><img src="images/coffee.webp" alt="" loading="lazy" decoding="async" /><div class="strat-1"><h1>Elevation</h1><h1>Elevation</h1></div><img src="images/leaves.webp" alt="" loading="lazy" decoding="async" /></div>
       </section>
 
       <footer class="footer">
@@ -158,9 +161,9 @@
       </footer>
     </main>
 
-    <script src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/ScrollTrigger.min.js"></script>
-    <script src="js/javascript.js"></script>
+    <script defer src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/gsap.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/ScrollTrigger.min.js"></script>
+    <script defer src="js/javascript.js"></script>
   </body>
 </html>
