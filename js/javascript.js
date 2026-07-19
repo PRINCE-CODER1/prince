@@ -1,27 +1,29 @@
 gsap.registerPlugin(ScrollTrigger);
-const lenis = new Lenis({
-  duration: 1.5,
-});
 
-lenis.on("scroll", (e) => {
-  console.log(e);
-});
+if (typeof Lenis !== "undefined") {
+  const lenis = new Lenis({
+    duration: 1.5,
+  });
 
-function raf(time) {
-  lenis.raf(time);
+  function raf(time) {
+    lenis.raf(time);
+    requestAnimationFrame(raf);
+  }
   requestAnimationFrame(raf);
 }
-requestAnimationFrame(raf);
 //   cursor on hover in navbar
 
 var crsr = document.querySelector(".cursor");
 var main = document.querySelector(".main");
-main.addEventListener("mousemove", function (details) {
-  gsap.to(".cursor", {
-    left: details.x,
-    top: details.y,
+
+if (crsr && main) {
+  main.addEventListener("mousemove", function (details) {
+    gsap.to(".cursor", {
+      left: details.x,
+      top: details.y,
+    });
   });
-});
+}
 
 // function canva() {
 //   const canvas = document.querySelector("canvas");
