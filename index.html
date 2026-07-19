@@ -5,234 +5,382 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Prince Kumar is a creative developer and digital designer building immersive, performant portfolio experiences."
+      content="Prince Kumar — Creative Developer and digital designer crafting high-performance, immersive portfolio experiences."
     />
-    <link
-      rel="preload"
-      href="css/font-family/Roboto-Black.woff"
-      as="font"
-      type="font/woff"
-      crossorigin
-    />
-    <link
-      rel="preload"
-      href="css/font-family/Roboto-Regular.woff"
-      as="font"
-      type="font/woff"
-      crossorigin
-    />
-    <link
-      rel="preload"
-      href="images/night.webp"
-      as="image"
-      fetchpriority="high"
-    />
+    
+    <!-- Premium Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Syne:wght@700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="css/style.css" />
     <link rel="icon" type="image/png" href="images/mars.png" />
-    <title>Prince Kumar — Immersive Portfolio</title>
+    <title>Prince Kumar — Immersive Portfolio & Digital Gravity</title>
   </head>
   <body>
-    <div class="cursor" aria-hidden="true"></div>
+    <!-- Premium Custom Cursor -->
+    <div class="cursor" aria-hidden="true">
+      <div class="cursor__dot"></div>
+      <div class="cursor__ring"></div>
+      <span class="cursor__label">VIEW</span>
+    </div>
+
+    <!-- Interactive Preloader -->
+    <div class="preloader" id="preloader">
+      <div class="preloader__progress-bar"></div>
+      <div class="preloader__inner">
+        <div class="preloader__meta">PRINCE KUMAR &copy; 2026</div>
+        <div class="preloader__center">
+          <div class="preloader__title">
+            <span class="preloader__word">CREATIVE</span>
+            <span class="preloader__word">DEVELOPMENT</span>
+          </div>
+          <div class="preloader__percent">
+            <span id="preloader-percent">00</span><span class="unit">%</span>
+          </div>
+        </div>
+        <div class="preloader__footer">
+          <span>PORTFOLIO REDESIGN</span>
+          <span>LOADING ASSETS</span>
+        </div>
+      </div>
+    </div>
+
     <div class="noise" aria-hidden="true"></div>
     <canvas id="webgl" aria-hidden="true"></canvas>
 
+    <!-- Sleek Navigation Capsule -->
     <nav class="site-nav" aria-label="Primary navigation">
       <a class="brand" href="#home" aria-label="Prince Kumar home">
-        <span>Prince</span><span>Kumar</span>
+        <span>PRINCE</span><span>KUMAR</span>
       </a>
       <div class="nav-links">
-        <a href="#profile">Profile</a>
-        <a href="#work">Work</a>
-        <a href="#process">Process</a>
-        <a href="#contact">Contact</a>
+        <a href="#profile" class="nav-item">Profile</a>
+        <a href="#work" class="nav-item">Work</a>
+        <a href="#process" class="nav-item">Process</a>
+        <a href="#contact" class="nav-item">Contact</a>
       </div>
     </nav>
 
-    <main>
-      <section class="hero section" id="home" aria-label="Immersive hero">
-        <div class="hero__backdrop">
-          <img
-            src="images/night.webp"
-            alt="Cinematic midnight landscape"
-            fetchpriority="high"
-            decoding="async"
-          />
-        </div>
-        <div class="hero__glow" aria-hidden="true"></div>
-        <div class="hero__content">
-          <p class="eyebrow">Independent creative developer • 2026</p>
-          <h1>
-            <span>Digital</span><span>gravity for</span
-            ><span>bold brands.</span>
-          </h1>
-          <div class="hero__footer">
-            <p>
-              A portfolio experience shaped with WebGL atmosphere, elegant
-              motion, sharp typography, and performance-first interactions that
-              feel premium without feeling heavy.
-            </p>
-            <a class="button magnetic" href="#work">Explore selected work</a>
+    <main id="smooth-wrapper">
+      <div id="smooth-content">
+        <!-- Hero Section -->
+        <section class="hero section" id="home" aria-label="Hero Section">
+          <div class="hero__backdrop">
+            <img
+              src="images/night.webp"
+              alt="Cinematic midnight landscape"
+              fetchpriority="high"
+              decoding="async"
+            />
           </div>
-        </div>
-        <div class="hero__metrics" aria-label="Portfolio metrics">
-          <div><strong>18+</strong><span>Signature builds</span></div>
-          <div><strong>94</strong><span>Lighthouse target</span></div>
-          <div><strong>0.9s</strong><span>Motion response</span></div>
-        </div>
-      </section>
-
-      <section
-        class="manifesto section"
-        id="profile"
-        aria-label="Profile statement"
-      >
-        <p class="section-kicker">Profile</p>
-        <div class="split-heading reveal-text">
-          I design portfolio systems where visual drama, clean code, and human
-          rhythm move together.
-        </div>
-        <div class="manifesto__grid">
-          <article>
-            <span>01</span>
-            <h2>Art direction</h2>
-            <p>
-              Atmospheric compositions, tactile depth, and editorial type
-              choices that make the first five seconds unforgettable.
-            </p>
-          </article>
-          <article>
-            <span>02</span>
-            <h2>Front-end craft</h2>
-            <p>
-              Lean markup, responsive CSS, GSAP timelines, Lenis smoothing, and
-              guarded WebGL for graceful fallbacks.
-            </p>
-          </article>
-          <article>
-            <span>03</span>
-            <h2>Performance</h2>
-            <p>
-              GPU-friendly transforms, lazy media, reduced-motion support, and
-              content visibility for quiet, fluid browsing.
-            </p>
-          </article>
-        </div>
-      </section>
-
-      <section class="marquee section" aria-label="Creative disciplines">
-        <div class="marquee__track" aria-hidden="true">
-          <span>Immersive</span><span>Portfolio</span><span>Three.js</span
-          ><span>Motion</span><span>Strategy</span><span>Design</span>
-        </div>
-        <div class="marquee__track marquee__track--reverse" aria-hidden="true">
-          <span>Responsive</span><span>Fast</span><span>Awwwards feel</span
-          ><span>WebGL</span><span>Brand systems</span>
-        </div>
-      </section>
-
-      <section class="work section" id="work" aria-label="Selected work">
-        <p class="section-kicker">Selected work</p>
-        <div class="work__list">
-          <article class="work-card" data-image="images/strat.webp">
-            <span>01</span>
-            <h2>Nocturne Studio</h2>
-            <p>
-              Luxury landing page with cinematic scroll reveals and a spatial
-              Three.js centerpiece.
-            </p>
-          </article>
-          <article class="work-card" data-image="images/illu.webp">
-            <span>02</span>
-            <h2>Orbit Archive</h2>
-            <p>
-              Editorial portfolio grid with fast filtering, magnetic
-              calls-to-action, and generous whitespace.
-            </p>
-          </article>
-          <article class="work-card" data-image="images/coffee.webp">
-            <span>03</span>
-            <h2>Signal House</h2>
-            <p>
-              Conversion-focused brand website tuned for motion, clarity, and
-              measurable launch speed.
-            </p>
-          </article>
-        </div>
-      </section>
-
-      <section class="feature section" aria-label="Featured motion reel">
-        <div class="feature__media">
-          <video
-            src="videos/illustration.mp4"
-            autoplay
-            muted
-            loop
-            playsinline
-            preload="metadata"
-            poster="images/illu.webp"
-          ></video>
-        </div>
-        <div class="feature__content">
-          <p class="section-kicker">Motion language</p>
-          <h2>Soft scroll. Deep space. Zero clutter.</h2>
-          <p>
-            Every interaction is choreographed to guide attention: subtle when
-            content matters, expressive when the moment deserves emotion.
-          </p>
-        </div>
-      </section>
-
-      <section class="process section" id="process" aria-label="Design process">
-        <p class="section-kicker">Process</p>
-        <div class="process__steps">
-          <div>
-            <span>Discover</span>
-            <p>
-              Map your story, audience, conversion goals, and visual tension.
-            </p>
+          <div class="hero__glow" aria-hidden="true"></div>
+          
+          <div class="hero__content">
+            <div class="hero__meta-top">
+              <span class="eyebrow">Creative Developer &amp; Motion Artist</span>
+              <span class="portfolio-tag">Available for Freelance</span>
+            </div>
+            
+            <h1 class="reveal-h1">
+              <span class="word-mask"><span>DIGITAL</span></span>
+              <span class="word-mask"><span>GRAVITY FOR</span></span>
+              <span class="word-mask"><span class="highlight-text">BOLD BRANDS</span></span>
+            </h1>
+            
+            <div class="hero__footer">
+              <p>
+                A portfolio experience shaped with WebGL atmosphere, elegant
+                motion, sharp typography, and performance-first interactions that
+                feel premium without feeling heavy.
+              </p>
+              <div class="hero__actions">
+                <a class="button magnetic explore-btn" href="#work">
+                  <span>Explore selected work</span>
+                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 4V20M12 20L18 14M12 20L6 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </a>
+              </div>
+            </div>
           </div>
-          <div>
-            <span>Prototype</span>
-            <p>
-              Build motion systems early so the experience feels alive, not
-              decorated.
-            </p>
+          
+          <div class="hero__metrics" aria-label="Portfolio metrics">
+            <div class="metric-card"><strong>18+</strong><span>Signature builds</span></div>
+            <div class="metric-card"><strong>94</strong><span>Lighthouse target</span></div>
+            <div class="metric-card"><strong>0.9s</strong><span>Motion response</span></div>
           </div>
-          <div>
-            <span>Optimize</span>
-            <p>
-              Ship compressed media, clean timelines, accessible fallbacks, and
-              smooth FPS.
-            </p>
-          </div>
-        </div>
-      </section>
+        </section>
 
-      <footer class="footer section" id="contact">
-        <p class="section-kicker">Available for selective collaborations</p>
-        <h2>Let’s build a portfolio people remember.</h2>
-        <a class="button magnetic" href="mailto:hello@example.com"
-          >Start a project</a
+        <!-- Profile Section -->
+        <section
+          class="manifesto section"
+          id="profile"
+          aria-label="Profile Statement"
         >
-      </footer>
+          <div class="container">
+            <p class="section-kicker">Profile</p>
+            <h2 class="split-heading reveal-text">
+              I design portfolio systems where visual drama, clean code, and human rhythm move together.
+            </h2>
+            
+            <div class="manifesto__grid">
+              <article class="manifesto-card">
+                <span class="card-num">01</span>
+                <h3>Art direction</h3>
+                <p>
+                  Atmospheric compositions, tactile depth, and editorial type
+                  choices that make the first five seconds unforgettable.
+                </p>
+                <div class="card-glow"></div>
+              </article>
+              <article class="manifesto-card">
+                <span class="card-num">02</span>
+                <h3>Front-end craft</h3>
+                <p>
+                  Lean markup, responsive CSS, GSAP timelines, Lenis smoothing, and
+                  guarded WebGL for graceful fallbacks.
+                </p>
+                <div class="card-glow"></div>
+              </article>
+              <article class="manifesto-card">
+                <span class="card-num">03</span>
+                <h3>Performance</h3>
+                <p>
+                  GPU-friendly transforms, lazy media, reduced-motion support, and
+                  content visibility for quiet, fluid browsing.
+                </p>
+                <div class="card-glow"></div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <!-- Marquee Section -->
+        <section class="marquee section" aria-label="Creative disciplines">
+          <div class="marquee__track" aria-hidden="true">
+            <span>Immersive</span><span>•</span><span>Portfolio</span><span>•</span><span>Three.js</span><span>•</span><span>Motion</span><span>•</span><span>Strategy</span><span>•</span><span>Design</span><span>•</span>
+          </div>
+          <div class="marquee__track marquee__track--reverse" aria-hidden="true">
+            <span>Responsive</span><span>•</span><span>Fast</span><span>•</span><span>Awwwards feel</span><span>•</span><span>WebGL</span><span>•</span><span>Brand systems</span><span>•</span>
+          </div>
+        </section>
+
+        <!-- Selected Work Horizontal Gallery Section -->
+        <section class="work section" id="work" aria-label="Selected work">
+          <div class="work__pinned">
+            <div class="work__header">
+              <p class="section-kicker">Selected work</p>
+              <h2 class="work-title">Crafted Digital Space</h2>
+            </div>
+            
+            <div class="work__horizontal-wrap">
+              <!-- Slide 0: Intro -->
+              <div class="work__slide intro-slide">
+                <div class="intro-slide__content">
+                  <span class="slide-num">00</span>
+                  <h3>CREATIVE ARCHIVE</h3>
+                  <p>A curated selection of projects exploring custom WebGL shaders, premium layout transitions, and high-fidelity physics.</p>
+                  <div class="scroll-hint">
+                    <span class="hint-arrow">→</span>
+                    <span>Scroll down to slide</span>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Slide 1: Project 1 -->
+              <div class="work__slide">
+                <article class="work-card" data-image="images/strat.webp">
+                  <div class="work-card__inner">
+                    <div class="work-card__media">
+                      <div class="work-card__image-reveal">
+                        <img src="images/strat.webp" alt="Nocturne Studio landing page representation" loading="lazy" />
+                      </div>
+                    </div>
+                    <div class="work-card__info">
+                      <span class="work-card__num">01</span>
+                      <h3 class="work-card__title">Nocturne Studio</h3>
+                      <p class="work-card__desc">
+                        Luxury landing page with cinematic scroll reveals and a spatial
+                        Three.js centerpiece.
+                      </p>
+                      <div class="work-card__tags">
+                        <span>WebGL</span><span>GSAP</span><span>Editorial</span>
+                      </div>
+                      <a href="#" class="work-card__link button magnetic">
+                        <span>Explore Project</span>
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      </a>
+                    </div>
+                  </div>
+                </article>
+              </div>
+
+              <!-- Slide 2: Project 2 -->
+              <div class="work__slide">
+                <article class="work-card" data-image="images/illu.webp">
+                  <div class="work-card__inner">
+                    <div class="work-card__media">
+                      <div class="work-card__image-reveal">
+                        <img src="images/illu.webp" alt="Orbit Archive representation" loading="lazy" />
+                      </div>
+                    </div>
+                    <div class="work-card__info">
+                      <span class="work-card__num">02</span>
+                      <h3 class="work-card__title">Orbit Archive</h3>
+                      <p class="work-card__desc">
+                        Editorial portfolio grid with fast filtering, magnetic
+                        calls-to-action, and generous whitespace.
+                      </p>
+                      <div class="work-card__tags">
+                        <span>Interaction</span><span>CSS Grid</span><span>Minimal</span>
+                      </div>
+                      <a href="#" class="work-card__link button magnetic">
+                        <span>Explore Project</span>
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      </a>
+                    </div>
+                  </div>
+                </article>
+              </div>
+
+              <!-- Slide 3: Project 3 -->
+              <div class="work__slide">
+                <article class="work-card" data-image="images/coffee.webp">
+                  <div class="work-card__inner">
+                    <div class="work-card__media">
+                      <div class="work-card__image-reveal">
+                        <img src="images/coffee.webp" alt="Signal House conversion website representation" loading="lazy" />
+                      </div>
+                    </div>
+                    <div class="work-card__info">
+                      <span class="work-card__num">03</span>
+                      <h3 class="work-card__title">Signal House</h3>
+                      <p class="work-card__desc">
+                        Conversion-focused brand website tuned for motion, clarity, and
+                        measurable launch speed.
+                      </p>
+                      <div class="work-card__tags">
+                        <span>Performance</span><span>SVG Animation</span><span>Optimization</span>
+                      </div>
+                      <a href="#" class="work-card__link button magnetic">
+                        <span>Explore Project</span>
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                      </a>
+                    </div>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Feature Section (Motion Reel) -->
+        <section class="feature section" aria-label="Featured motion reel">
+          <div class="feature__container">
+            <div class="feature__media">
+              <video
+                src="videos/illustration.mp4"
+                autoplay
+                muted
+                loop
+                playsinline
+                preload="metadata"
+                poster="images/illu.webp"
+              ></video>
+              <div class="feature__play-btn magnetic">
+                <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M8 5v14l11-7z" />
+                </svg>
+              </div>
+            </div>
+            <div class="feature__content">
+              <p class="section-kicker">Motion language</p>
+              <h2>Soft scroll. Deep space. Zero clutter.</h2>
+              <p>
+                Every interaction is choreographed to guide attention: subtle when
+                content matters, expressive when the moment deserves emotion.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Process Section -->
+        <section class="process section" id="process" aria-label="Design process">
+          <div class="container">
+            <p class="section-kicker">Process</p>
+            <h2 class="process-title">Methodology</h2>
+            <div class="process__steps">
+              <div class="process-step">
+                <span class="step-num">01</span>
+                <h3>Discover</h3>
+                <p>
+                  Map your story, audience, conversion goals, and visual tension.
+                </p>
+                <div class="step-progress-line"></div>
+              </div>
+              <div class="process-step">
+                <span class="step-num">02</span>
+                <h3>Prototype</h3>
+                <p>
+                  Build motion systems early so the experience feels alive, not
+                  decorated.
+                </p>
+                <div class="step-progress-line"></div>
+              </div>
+              <div class="process-step">
+                <span class="step-num">03</span>
+                <h3>Optimize</h3>
+                <p>
+                  Ship compressed media, clean timelines, accessible fallbacks, and
+                  smooth FPS.
+                </p>
+                <div class="step-progress-line"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Footer Section -->
+        <footer class="footer section" id="contact">
+          <div class="footer__glow" aria-hidden="true"></div>
+          <div class="footer__content">
+            <p class="section-kicker">Available for selective collaborations</p>
+            <h2>Let’s build a portfolio people remember.</h2>
+            
+            <div class="footer__bottom">
+              <a class="button magnetic mail-btn" href="mailto:hello@example.com">
+                <span>Start a project</span>
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </a>
+              
+              <div class="footer__links">
+                <a href="#" class="magnetic">LinkedIn</a>
+                <a href="#" class="magnetic">Twitter</a>
+                <a href="#" class="magnetic">GitHub</a>
+              </div>
+            </div>
+            
+            <div class="footer__copyright">
+              <span>&copy; 2026 PRINCE KUMAR. ALL RIGHTS RESERVED.</span>
+              <span>BACK TO TOP ↑</span>
+            </div>
+          </div>
+        </footer>
+      </div>
     </main>
 
+    <!-- Dependencies: Three.js, Lenis, GSAP -->
     <script
-      defer
       src="https://unpkg.com/three@0.160.0/build/three.min.js"
     ></script>
     <script
-      defer
       src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"
     ></script>
     <script
-      defer
       src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/gsap.min.js"
     ></script>
     <script
-      defer
       src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/ScrollTrigger.min.js"
     ></script>
-    <script defer src="js/javascript.js"></script>
+    <script src="js/javascript.js"></script>
   </body>
 </html>

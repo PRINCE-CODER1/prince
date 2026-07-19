@@ -7,6 +7,85 @@ if (typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
+/* ---------------------------------------------------------------------
+   PRELOADER & PAGE ENTRY TIMELINE
+   --------------------------------------------------------------------- */
+function bootPreloader() {
+  const preloader = document.getElementById("preloader");
+  const percentText = document.getElementById("preloader-percent");
+  const progressBar = document.querySelector(".preloader__progress-bar");
+  
+  if (!preloader) return;
+
+  // If user prefers reduced motion, skip preloader animation
+  if (prefersReducedMotion) {
+    preloader.style.display = "none";
+    gsap.set(".site-nav", { y: 0, autoAlpha: 1 });
+    gsap.set(".word-mask span", { translateY: 0 });
+    return;
+  }
+
+  let count = 0;
+  const target = 100;
+  const duration = 2.0; // 2 seconds loader
+  const incrementTime = (duration * 1000) / target;
+  
+  const timer = setInterval(() => {
+    count++;
+    if (count <= target) {
+      const paddedCount = count.toString().padStart(2, "0");
+      percentText.textContent = paddedCount;
+      if (progressBar) {
+        progressBar.style.width = `${count}%`;
+      }
+    } else {
+      clearInterval(timer);
+      triggerPageEntry();
+    }
+  }, incrementTime);
+}
+
+function triggerPageEntry() {
+  const tl = gsap.timeline();
+  
+  // Slide preloader up out of view
+  tl.to(".preloader", {
+    yPercent: -100,
+    duration: 1.2,
+    ease: "power4.inOut"
+  });
+
+  // Fade and drop nav down
+  tl.to(".site-nav", {
+    y: 0,
+    autoAlpha: 1,
+    duration: 1,
+    ease: "power3.out"
+  }, "-=0.4");
+
+  // Reveal hero text
+  tl.to(".word-mask span", {
+    yPercent: 0,
+    rotate: 0,
+    stagger: 0.08,
+    duration: 1.2,
+    ease: "power4.out"
+  }, "-=0.8");
+
+  // Show secondary hero content
+  tl.from(".hero__meta-top, .hero__footer, .hero__metrics", {
+    y: 30,
+    autoAlpha: 0,
+    stagger: 0.1,
+    duration: 1,
+    ease: "power3.out"
+  }, "-=0.9");
+}
+
+/* ---------------------------------------------------------------------
+   SMOOTH SCROLL (Lenis)
+   --------------------------------------------------------------------- */
+let lenisInstance = null;
 function bootSmoothScroll() {
   if (
     prefersReducedMotion ||
@@ -16,57 +95,118 @@ function bootSmoothScroll() {
   )
     return;
 
-  const lenis = new Lenis({
-    duration: 0.95,
+  lenisInstance = new Lenis({
+    duration: 1.15,
     smoothWheel: true,
-    wheelMultiplier: 0.8,
-    touchMultiplier: 1.15,
+    wheelMultiplier: 0.95,
+    touchMultiplier: 1.2,
   });
 
-  lenis.on("scroll", ScrollTrigger.update);
-  gsap.ticker.add((time) => lenis.raf(time * 1000));
+  lenisInstance.on("scroll", ScrollTrigger.update);
+  gsap.ticker.add((time) => lenisInstance.raf(time * 1000));
   gsap.ticker.lagSmoothing(0);
 }
 
+/* ---------------------------------------------------------------------
+   DUAL-DOT CUSTOM CURSOR WITH INTERACTIVE STATES
+   --------------------------------------------------------------------- */
 function bootCursor() {
   const cursor = document.querySelector(".cursor");
+  const dot = document.querySelector(".cursor__dot");
+  const ring = document.querySelector(".cursor__ring");
+  const label = document.querySelector(".cursor__label");
+  
   if (
     !cursor ||
     !isFinePointer ||
     prefersReducedMotion ||
     typeof gsap === "undefined"
   ) {
-    if (cursor) cursor.hidden = true;
+    if (cursor) cursor.style.display = "none";
     return;
   }
 
-  const setX = gsap.quickSetter(cursor, "x", "px");
-  const setY = gsap.quickSetter(cursor, "y", "px");
-  let x = window.innerWidth / 2;
-  let y = window.innerHeight / 2;
+  // Hide default cursor
+  document.body.style.cursor = "none";
 
-  window.addEventListener(
-    "pointermove",
-    (event) => {
-      x = event.clientX;
-      y = event.clientY;
-    },
-    { passive: true },
-  );
+  // Set quick positions using GSAP
+  const dotX = gsap.quickTo(dot, "left", { duration: 0.05, ease: "power3.out" });
+  const dotY = gsap.quickTo(dot, "top", { duration: 0.05, ease: "power3.out" });
+  
+  const ringX = gsap.quickTo(ring, "left", { duration: 0.35, ease: "power3.out" });
+  const ringY = gsap.quickTo(ring, "top", { duration: 0.35, ease: "power3.out" });
+  
+  const labelX = gsap.quickTo(label, "left", { duration: 0.25, ease: "power3.out" });
+  const labelY = gsap.quickTo(label, "top", { duration: 0.25, ease: "power3.out" });
 
-  gsap.ticker.add(() => {
-    setX(x);
-    setY(y);
+  window.addEventListener("pointermove", (e) => {
+    dotX(e.clientX);
+    dotY(e.clientY);
+    
+    ringX(e.clientX);
+    ringY(e.clientY);
+    
+    labelX(e.clientX);
+    labelY(e.clientY);
+  }, { passive: true });
+
+  // Handle interactive hover states
+  const interactives = document.querySelectorAll("a, button, .nav-item, .explore-btn, .footer__copyright span");
+  interactives.forEach(el => {
+    el.addEventListener("mouseenter", () => {
+      document.body.classList.add("cursor-hover");
+    });
+    el.addEventListener("mouseleave", () => {
+      document.body.classList.remove("cursor-hover");
+    });
   });
 
+  // Handle work items cursor label
+  const workCards = document.querySelectorAll(".work-card");
+  workCards.forEach(card => {
+    card.addEventListener("mouseenter", () => {
+      document.body.classList.add("cursor-interactive");
+      label.textContent = "VIEW";
+    });
+    card.addEventListener("mouseleave", () => {
+      document.body.classList.remove("cursor-interactive");
+    });
+  });
+
+  // Handle feature video hover state
+  const featureMedia = document.querySelector(".feature__media");
+  if (featureMedia) {
+    const video = featureMedia.querySelector("video");
+    featureMedia.addEventListener("mouseenter", () => {
+      document.body.classList.add("cursor-play");
+      label.textContent = video.paused ? "PLAY" : "PAUSE";
+    });
+    featureMedia.addEventListener("mouseleave", () => {
+      document.body.classList.remove("cursor-play");
+    });
+    featureMedia.addEventListener("click", () => {
+      if (video.paused) {
+        video.play();
+        label.textContent = "PAUSE";
+      } else {
+        video.pause();
+        label.textContent = "PLAY";
+      }
+    });
+  }
+
+  // Magnetic components
   document.querySelectorAll(".magnetic").forEach((element) => {
     element.addEventListener("pointermove", (event) => {
       const rect = element.getBoundingClientRect();
+      const relX = event.clientX - rect.left - rect.width / 2;
+      const relY = event.clientY - rect.top - rect.height / 2;
+      
       gsap.to(element, {
-        x: (event.clientX - rect.left - rect.width / 2) * 0.25,
-        y: (event.clientY - rect.top - rect.height / 2) * 0.25,
-        duration: 0.45,
-        ease: "power3.out",
+        x: relX * 0.35,
+        y: relY * 0.35,
+        duration: 0.3,
+        ease: "power2.out",
       });
     });
 
@@ -75,138 +215,77 @@ function bootCursor() {
         x: 0,
         y: 0,
         duration: 0.6,
-        ease: "elastic.out(1, 0.35)",
+        ease: "elastic.out(1, 0.4)",
       });
     });
   });
-
-  document.querySelectorAll(".work-card").forEach((card) => {
-    card.addEventListener("mouseenter", () => {
-      cursor.style.width = "280px";
-      cursor.style.height = "180px";
-      cursor.style.borderRadius = "24px";
-      cursor.style.backgroundImage = `url(${card.dataset.image})`;
-    });
-
-    card.addEventListener("mouseleave", () => {
-      cursor.style.width = "24px";
-      cursor.style.height = "24px";
-      cursor.style.borderRadius = "50%";
-      cursor.style.backgroundImage = "none";
-    });
-  });
 }
 
-function splitLetters(element) {
-  const fragment = document.createDocumentFragment();
-  [...element.textContent].forEach((character) => {
-    const span = document.createElement("span");
-    span.textContent = character;
-    fragment.appendChild(span);
-  });
-  element.replaceChildren(fragment);
-  return element.querySelectorAll("span");
-}
-
-function bootMotion() {
-  if (
-    prefersReducedMotion ||
-    typeof gsap === "undefined" ||
-    typeof ScrollTrigger === "undefined"
-  )
+/* ---------------------------------------------------------------------
+   HORIZONTAL PINNED SCROLL (Selected Work)
+   --------------------------------------------------------------------- */
+function bootHorizontalScroll() {
+  if (prefersReducedMotion || typeof gsap === "undefined" || typeof ScrollTrigger === "undefined") {
     return;
+  }
 
-  gsap.from(".site-nav", {
-    y: -40,
-    autoAlpha: 0,
-    duration: 1,
-    ease: "power3.out",
-  });
-  gsap.from(".hero h1 span", {
-    yPercent: 115,
-    rotate: 2,
-    autoAlpha: 0,
-    stagger: 0.08,
-    duration: 1.2,
-    ease: "power4.out",
-  });
-  gsap.from(".hero__footer, .hero__metrics", {
-    y: 28,
-    autoAlpha: 0,
-    delay: 0.45,
-    duration: 1,
-    ease: "power3.out",
-  });
+  // Create matchMedia listener to only activate horizontal scroll on desktop screens
+  const isDesktop = window.matchMedia("(min-width: 821px)");
+  let workCtx;
 
-  gsap.to(".hero__backdrop img", {
-    scale: 1.16,
-    scrollTrigger: {
-      trigger: ".hero",
-      start: "top top",
-      end: "bottom top",
-      scrub: 0.8,
-    },
-  });
+  function initScrollTrigger(e) {
+    if (workCtx) workCtx.revert();
 
-  document.querySelectorAll(".reveal-text").forEach((element) => {
-    gsap.to(splitLetters(element), {
-      color: "#f5efe6",
-      stagger: 0.01,
-      scrollTrigger: {
-        trigger: element,
-        start: "top 78%",
-        end: "bottom 45%",
-        scrub: 0.8,
-      },
-    });
-  });
+    // Revert context if not desktop
+    if (!e.matches) return;
 
-  gsap.to(".marquee__track:not(.marquee__track--reverse)", {
-    xPercent: -18,
-    ease: "none",
-    scrollTrigger: {
-      trigger: ".marquee",
-      start: "top bottom",
-      end: "bottom top",
-      scrub: 0.4,
-    },
-  });
+    workCtx = gsap.context(() => {
+      const workSection = document.querySelector(".work");
+      const horizontalWrap = document.querySelector(".work__horizontal-wrap");
+      if (!workSection || !horizontalWrap) return;
 
-  gsap.to(".marquee__track--reverse", {
-    xPercent: 14,
-    ease: "none",
-    scrollTrigger: {
-      trigger: ".marquee",
-      start: "top bottom",
-      end: "bottom top",
-      scrub: 0.4,
-    },
-  });
+      const scrollAmount = horizontalWrap.scrollWidth - window.innerWidth;
 
-  gsap.utils
-    .toArray(".manifesto article, .work-card, .process__steps div")
-    .forEach((element) => {
-      gsap.from(element, {
-        y: 50,
-        autoAlpha: 0,
-        duration: 0.9,
-        ease: "power3.out",
-        scrollTrigger: { trigger: element, start: "top 86%" },
+      // Pin the section and animate horizontal wrap leftwards
+      const horizontalTween = gsap.to(horizontalWrap, {
+        x: -scrollAmount,
+        ease: "none",
+        scrollTrigger: {
+          trigger: ".work",
+          pin: true,
+          scrub: 1,
+          start: "top top",
+          end: () => `+=${scrollAmount}`,
+          invalidateOnRefresh: true,
+        }
+      });
+
+      // Parallax effect on work card images inside horizontal slides
+      gsap.utils.toArray(".work-card__media img").forEach(img => {
+        gsap.fromTo(img, {
+          xPercent: -8,
+        }, {
+          xPercent: 8,
+          ease: "none",
+          scrollTrigger: {
+            trigger: img.closest(".work__slide"),
+            containerAnimation: horizontalTween,
+            start: "left right",
+            end: "right left",
+            scrub: true,
+          }
+        });
       });
     });
+  }
 
-  gsap.from(".feature__media", {
-    clipPath: "inset(12% round 42px)",
-    scale: 0.94,
-    scrollTrigger: {
-      trigger: ".feature",
-      start: "top 75%",
-      end: "center center",
-      scrub: 0.8,
-    },
-  });
+  isDesktop.addEventListener("change", initScrollTrigger);
+  initScrollTrigger(isDesktop);
 }
 
+/* ---------------------------------------------------------------------
+   UPGRADED THREE.JS WEBGL GLOW BLOB & PARTICLES
+   --------------------------------------------------------------------- */
 function bootThreeScene() {
   const canvas = document.querySelector("#webgl");
   if (
@@ -217,82 +296,300 @@ function bootThreeScene() {
   )
     return;
 
+  // Custom Shaders for Morphing glass/liquid sphere
+  const vertexShaderSource = `
+    uniform float uTime;
+    varying vec3 vNormal;
+    varying vec3 vPosition;
+    varying vec2 vUv;
+    
+    // Simple 3D math displacement to simulate organic fluid motion
+    float getDisplacement(vec3 p) {
+      float d = sin(p.x * 2.5 + uTime * 0.8) * cos(p.y * 2.0 + uTime * 0.6) * 0.15;
+      d += sin(p.z * 1.8 - uTime * 0.5) * 0.1;
+      return d;
+    }
+    
+    void main() {
+      vNormal = normalize(normalMatrix * normal);
+      vPosition = position;
+      vUv = uv;
+      
+      float displacement = getDisplacement(position);
+      vec3 newPosition = position + normal * displacement;
+      
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
+    }
+  `;
+
+  const fragmentShaderSource = `
+    uniform float uTime;
+    varying vec3 vNormal;
+    varying vec3 vPosition;
+    varying vec2 vUv;
+    
+    void main() {
+      // Fresnel reflection factor
+      vec3 viewDir = normalize(vec3(0.0, 0.0, 1.0));
+      float fresnel = pow(1.0 - max(dot(vNormal, viewDir), 0.0), 2.5);
+      
+      // Gradient vectors shifting colors smoothly
+      vec3 colorBlue = vec3(0.31, 0.44, 0.91);   // #4F70E7 Electric Blue
+      vec3 colorOrange = vec3(1.0, 0.36, 0.13); // #FF5D22 Orange
+      vec3 colorLime = vec3(0.71, 1.0, 0.25);   // #B6FF40 Lime
+      
+      // Shift colors based on normal position and time
+      vec3 finalGrad = mix(colorBlue, colorOrange, vNormal.x * 0.5 + 0.5);
+      finalGrad = mix(finalGrad, colorLime, sin(uTime * 0.3) * 0.3 + 0.3);
+      
+      // Add specular gloss highlights and fresnel rim glow
+      vec3 outputColor = finalGrad + vec3(fresnel * 0.7);
+      
+      gl_FragColor = vec4(outputColor, 0.15 + fresnel * 0.75);
+    }
+  `;
+
   const renderer = new THREE.WebGLRenderer({
     canvas,
     alpha: true,
-    antialias: false,
+    antialias: true,
     powerPreference: "high-performance",
   });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setSize(window.innerWidth, window.innerHeight);
 
   const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
-  camera.position.z = 8;
+  const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+  camera.position.z = 6;
 
-  const geometry = new THREE.IcosahedronGeometry(1.75, 3);
-  const material = new THREE.MeshStandardMaterial({
-    color: 0xff6f3d,
-    roughness: 0.42,
-    metalness: 0.28,
-    wireframe: true,
+  // Blob geometry & shader material
+  const geometry = new THREE.IcosahedronGeometry(1.6, 48);
+  const material = new THREE.ShaderMaterial({
+    vertexShader: vertexShaderSource,
+    fragmentShader: fragmentShaderSource,
+    uniforms: {
+      uTime: { value: 0 },
+    },
+    transparent: true,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending,
+    side: THREE.DoubleSide
   });
+
   const orb = new THREE.Mesh(geometry, material);
   scene.add(orb);
 
-  const stars = new THREE.Points(
-    new THREE.BufferGeometry().setAttribute(
-      "position",
-      new THREE.Float32BufferAttribute(
-        Array.from({ length: 900 }, () => (Math.random() - 0.5) * 22),
-        3,
-      ),
-    ),
-    new THREE.PointsMaterial({
-      color: 0xf5efe6,
-      size: 0.018,
-      transparent: true,
-      opacity: 0.72,
-    }),
-  );
-  scene.add(stars);
-  scene.add(new THREE.AmbientLight(0xffffff, 0.65));
-  const light = new THREE.DirectionalLight(0x7f9cff, 2.3);
-  light.position.set(3, 4, 5);
-  scene.add(light);
+  // Add surrounding stars vortex
+  const starsCount = 450;
+  const starsGeometry = new THREE.BufferGeometry();
+  const starsPositions = new Float32Array(starsCount * 3);
+  const starsSpeeds = [];
 
-  const resize = () => {
-    const width = window.innerWidth;
-    const height = window.innerHeight;
-    renderer.setSize(width, height, false);
-    camera.aspect = width / height;
+  for (let i = 0; i < starsCount * 3; i += 3) {
+    // Generate star coordinates in a cylindrical envelope
+    const radius = 2.0 + Math.random() * 8.0;
+    const angle = Math.random() * Math.PI * 2;
+    starsPositions[i] = Math.cos(angle) * radius;
+    starsPositions[i + 1] = (Math.random() - 0.5) * 6.0;
+    starsPositions[i + 2] = Math.sin(angle) * radius;
+
+    starsSpeeds.push({
+      radius,
+      angle,
+      speed: 0.05 + Math.random() * 0.12,
+      yOffset: (Math.random() - 0.5) * 0.1
+    });
+  }
+
+  starsGeometry.setAttribute("position", new THREE.BufferAttribute(starsPositions, 3));
+  const starsMaterial = new THREE.PointsMaterial({
+    color: 0xfaf8f5,
+    size: 0.024,
+    transparent: true,
+    opacity: 0.6,
+  });
+  const stars = new THREE.Points(starsGeometry, starsMaterial);
+  scene.add(stars);
+
+  // Ambient lighting for standard mesh blends
+  scene.add(new THREE.AmbientLight(0xffffff, 0.2));
+
+  // Handle Resize
+  const handleResize = () => {
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    renderer.setSize(w, h);
+    camera.aspect = w / h;
     camera.updateProjectionMatrix();
   };
-  resize();
-  window.addEventListener("resize", resize, { passive: true });
+  window.addEventListener("resize", handleResize, { passive: true });
 
-  let scrollProgress = 0;
-  ScrollTrigger.create({
-    trigger: document.body,
-    start: "top top",
-    end: "bottom bottom",
-    onUpdate: (self) => {
-      scrollProgress = self.progress;
-    },
-  });
+  // Gentle floating hover reaction tracking mouse coords
+  let targetMouseX = 0;
+  let targetMouseY = 0;
+  let currentMouseX = 0;
+  let currentMouseY = 0;
 
-  renderer.setAnimationLoop((time) => {
-    const t = time * 0.001;
-    orb.rotation.x = t * 0.18 + scrollProgress * 2.2;
-    orb.rotation.y = t * 0.26;
-    orb.position.y = Math.sin(t * 0.7) * 0.18;
-    stars.rotation.y = t * 0.025;
+  window.addEventListener("mousemove", (e) => {
+    targetMouseX = (e.clientX / window.innerWidth - 0.5) * 1.2;
+    targetMouseY = -(e.clientY / window.innerHeight - 0.5) * 1.2;
+  }, { passive: true });
+
+  // Setup Scroll Choreography with GSAP
+  // Fluidly repositions/scales the WebGL blob as user scrolls down different sections
+  gsap.timeline({
+    scrollTrigger: {
+      trigger: "body",
+      start: "top top",
+      end: "bottom bottom",
+      scrub: 1.5,
+    }
+  })
+  .to(orb.position, { x: 1.8, y: 0.2, z: 0 }, "profile")
+  .to(orb.scale, { x: 0.8, y: 0.8, z: 0.8 }, "profile")
+  
+  .to(orb.position, { x: -1.6, y: -0.2, z: -1 }, "work")
+  .to(orb.scale, { x: 1.1, y: 1.1, z: 1.1 }, "work")
+  
+  .to(orb.position, { x: 0, y: -1.2, z: 1 }, "contact")
+  .to(orb.scale, { x: 2.2, y: 2.2, z: 2.2 }, "contact");
+
+  // Main render loop
+  const clock = new THREE.Clock();
+  renderer.setAnimationLoop(() => {
+    const elapsed = clock.getElapsedTime();
+    material.uniforms.uTime.value = elapsed;
+
+    // Orbit/rotation of the main core
+    orb.rotation.y = elapsed * 0.15;
+    orb.rotation.z = elapsed * 0.08;
+
+    // Hover inertia tracking
+    currentMouseX += (targetMouseX - currentMouseX) * 0.06;
+    currentMouseY += (targetMouseY - currentMouseY) * 0.06;
+    orb.position.x += currentMouseX * 0.015;
+    orb.position.y += currentMouseY * 0.015;
+
+    // Spiral swirling stars vortex
+    const positions = starsGeometry.attributes.position.array;
+    for (let i = 0; i < starsCount; i++) {
+      const idx = i * 3;
+      const star = starsSpeeds[i];
+      star.angle += star.speed * 0.03;
+      positions[idx] = Math.cos(star.angle) * star.radius + currentMouseX * 0.25;
+      positions[idx + 2] = Math.sin(star.angle) * star.radius + currentMouseY * 0.25;
+    }
+    starsGeometry.attributes.position.needsUpdate = true;
+    stars.rotation.y = -elapsed * 0.02;
+
     renderer.render(scene, camera);
   });
 }
 
+/* ---------------------------------------------------------------------
+   ADDITIONAL SCROLL REVEALS & COMPONENT MICRO-ANIMATIONS
+   --------------------------------------------------------------------- */
+function splitLetters(element) {
+  const fragment = document.createDocumentFragment();
+  const text = element.textContent.trim();
+  [...text].forEach((char) => {
+    const span = document.createElement("span");
+    span.textContent = char === " " ? "\u00A0" : char;
+    fragment.appendChild(span);
+  });
+  element.replaceChildren(fragment);
+  return element.querySelectorAll("span");
+}
+
+function bootScrollTriggers() {
+  if (prefersReducedMotion || typeof gsap === "undefined" || typeof ScrollTrigger === "undefined") {
+    return;
+  }
+
+  // Heading split text reveals
+  document.querySelectorAll(".reveal-text").forEach((element) => {
+    const spans = splitLetters(element);
+    gsap.to(spans, {
+      color: "#FAF8F5", // paint into foreground color
+      stagger: 0.015,
+      scrollTrigger: {
+        trigger: element,
+        start: "top 80%",
+        end: "bottom 35%",
+        scrub: 0.8,
+      },
+    });
+  });
+
+  // Marquee track scrolling speeds
+  gsap.to(".marquee__track:not(.marquee__track--reverse)", {
+    xPercent: -20,
+    ease: "none",
+    scrollTrigger: {
+      trigger: ".marquee",
+      start: "top bottom",
+      end: "bottom top",
+      scrub: 0.5,
+    },
+  });
+
+  gsap.to(".marquee__track--reverse", {
+    xPercent: 15,
+    ease: "none",
+    scrollTrigger: {
+      trigger: ".marquee",
+      start: "top bottom",
+      end: "bottom top",
+      scrub: 0.5,
+    },
+  });
+
+  // Scale clip expansion for the cinematic video showcase
+  gsap.fromTo(".feature__media", 
+    { clipPath: "inset(12% 8% round 32px)", scale: 0.95 },
+    {
+      clipPath: "inset(0% 0% round 0px)",
+      scale: 1,
+      scrollTrigger: {
+        trigger: ".feature",
+        start: "top 80%",
+        end: "top 10%",
+        scrub: 1,
+      }
+    }
+  );
+
+  // Activate timeline highlights in process section
+  document.querySelectorAll(".process-step").forEach((step) => {
+    ScrollTrigger.create({
+      trigger: step,
+      start: "top 75%",
+      onEnter: () => step.classList.add("active"),
+      onLeaveBack: () => step.classList.remove("active"),
+    });
+  });
+
+  // Back to top button trigger in footer
+  const backToTop = document.querySelector(".footer__copyright span:last-child");
+  if (backToTop) {
+    backToTop.addEventListener("click", () => {
+      if (lenisInstance) {
+        lenisInstance.scrollTo(0, { duration: 1.5 });
+      } else {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+    });
+  }
+}
+
+/* ---------------------------------------------------------------------
+   INITIALIZATION
+   --------------------------------------------------------------------- */
 window.addEventListener("DOMContentLoaded", () => {
+  bootPreloader();
   bootSmoothScroll();
   bootCursor();
-  bootMotion();
+  bootHorizontalScroll();
   bootThreeScene();
+  bootScrollTriggers();
 });
