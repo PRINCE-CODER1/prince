@@ -1,169 +1,238 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Prince Kumar is a digital designer crafting atmospheric, responsive web experiences."
+      content="Prince Kumar is a creative developer and digital designer building immersive, performant portfolio experiences."
     />
-    <link rel="preload" href="css/font-family/Roboto-Black.woff" as="font" type="font/woff" crossorigin />
-    <link rel="preload" href="css/font-family/Roboto-Regular.woff" as="font" type="font/woff" crossorigin />
-    <link rel="preload" href="images/night.webp" as="image" fetchpriority="high" />
+    <link
+      rel="preload"
+      href="css/font-family/Roboto-Black.woff"
+      as="font"
+      type="font/woff"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="css/font-family/Roboto-Regular.woff"
+      as="font"
+      type="font/woff"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="images/night.webp"
+      as="image"
+      fetchpriority="high"
+    />
     <link rel="stylesheet" href="css/style.css" />
     <link rel="icon" type="image/png" href="images/mars.png" />
-    <title>Prince Kumar — Digital Experience Designer</title>
+    <title>Prince Kumar — Immersive Portfolio</title>
   </head>
   <body>
     <div class="cursor" aria-hidden="true"></div>
-    <div class="grain" aria-hidden="true"></div>
+    <div class="noise" aria-hidden="true"></div>
+    <canvas id="webgl" aria-hidden="true"></canvas>
 
-    <main class="main">
-      <section class="page-1" id="home" aria-label="Hero section">
-        <div class="page-1-img">
-          <img src="images/night.webp" alt="Moonlit landscape background" fetchpriority="high" decoding="async" />
-        </div>
-        <nav class="navbar" aria-label="Primary navigation">
-          <a class="logo" href="#home" aria-label="Prince Kumar home">
-            <div class="name">
-              <h1>Prince</h1>
-              <h1>Kumar</h1>
-            </div>
-          </a>
-          <div class="nav">
-            <h3><a href="#home">Home</a></h3>
-            <h3><a href="#about">About</a></h3>
-            <h3><a href="#work">Work</a></h3>
-          </div>
-        </nav>
+    <nav class="site-nav" aria-label="Primary navigation">
+      <a class="brand" href="#home" aria-label="Prince Kumar home">
+        <span>Prince</span><span>Kumar</span>
+      </a>
+      <div class="nav-links">
+        <a href="#profile">Profile</a>
+        <a href="#work">Work</a>
+        <a href="#process">Process</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </nav>
 
-        <div class="hero-kicker">Independent digital designer • India</div>
-        <div class="landing-para">
-          <p>Portfolio / 2026</p>
-          <h1>Creativity<br />never ends</h1>
-          <a class="magnetic-link" href="#work">Explore work</a>
+    <main>
+      <section class="hero section" id="home" aria-label="Immersive hero">
+        <div class="hero__backdrop">
+          <img
+            src="images/night.webp"
+            alt="Cinematic midnight landscape"
+            fetchpriority="high"
+            decoding="async"
+          />
         </div>
-        <div class="hero-orbit" aria-hidden="true"></div>
-        <div class="planet">
-          <img id="planet-img" src="images/mars.png" alt="" />
-        </div>
-        <div class="meteor">
-          <img id="meteor-img" src="images/meteor1.png" alt="" />
-        </div>
-        <div class="fence" aria-hidden="true">
-          <img id="fence-img-1" src="images/fence.png" alt="" loading="lazy" decoding="async" />
-          <img id="fence-img-2" src="images/fence.png" alt="" loading="lazy" decoding="async" />
-          <img id="fence-img-3" src="images/witch.gif" alt="" loading="lazy" decoding="async" />
-          <img id="fence-img-4" src="images/tree.png" alt="" loading="lazy" decoding="async" />
-          <img id="fence-img-5" src="images/tree.png" alt="" loading="lazy" decoding="async" />
-          <img id="fence-img-6" src="images/tree.png" alt="" loading="lazy" decoding="async" />
-          <img id="fence-img-7" src="images/tree.png" alt="" loading="lazy" decoding="async" />
-          <img id="fence-img-8" src="images/tree.png" alt="" loading="lazy" decoding="async" />
-          <img id="fence-img-9" src="images/tree.png" alt="" loading="lazy" decoding="async" />
-          <img id="fence-img-10" src="images/lantern.png" alt="" loading="lazy" decoding="async" />
-        </div>
-        <div class="grass" aria-hidden="true">
-          <img id="img-1" src="images/grass.png" alt="" loading="lazy" decoding="async" />
-          <img id="img-2" src="images/grass.png" alt="" loading="lazy" decoding="async" />
-          <img id="img-3" src="images/grass.png" alt="" loading="lazy" decoding="async" />
-          <img id="img-4" src="images/grass.png" alt="" loading="lazy" decoding="async" />
-        </div>
-      </section>
-
-      <section class="infinite-txt" id="about" aria-label="Design philosophy">
-        <div class="part-1">
-          <p class="reveal-txt">
-            Passionate web designer<br />transforming quiet ideas<br />into cinematic digital moments.
-          </p>
-        </div>
-        <div class="part-2" aria-hidden="true">
-          <div class="stripe stripe-l"><h1>WEB <span>DESIGNER</span> WEB <span>DESIGNER</span> WEB <span>DESIGNER</span></h1></div>
-          <div class="stripe stripe-r"><h1>CREATIVITY <span>CREATIVITY</span> CREATIVITY <span>CREATIVITY</span></h1></div>
-          <div class="stripe stripe-l"><h1>RESPONSIVE <span>RESPONSIVE</span> RESPONSIVE <span>RESPONSIVE</span></h1></div>
-          <div class="stripe stripe-r"><h1>INTUITIVE <span>INTUITIVE</span> INTUITIVE <span>INTUITIVE</span></h1></div>
-          <div class="stripe stripe-l"><h1>EXPERIENCES <span>EXPERIENCES</span> EXPERIENCES <span>EXPERIENCES</span></h1></div>
-        </div>
-        <div class="part-3">
-          <p class="reveal-txt">
-            Every layout is shaped for rhythm,<br />responsive flow,<br />and memorable interaction.
-          </p>
-        </div>
-      </section>
-
-      <section class="zooming" aria-label="Featured story">
-        <div class="top-con">
-          <div class="top-cnt">
-            <p>The Immortal</p>
-            <h1>Experiences make<br />brands unforgettable</h1>
-          </div>
-        </div>
-        <div class="img">
-          <video src="videos/illustration.mp4" autoplay muted loop playsinline preload="metadata" poster="images/illu.webp"></video>
-        </div>
-        <div class="btm-con">
-          <div class="btm-cnt">
-            <h1>Designed in India</h1>
+        <div class="hero__glow" aria-hidden="true"></div>
+        <div class="hero__content">
+          <p class="eyebrow">Independent creative developer • 2026</p>
+          <h1>
+            <span>Digital</span><span>gravity for</span
+            ><span>bold brands.</span>
+          </h1>
+          <div class="hero__footer">
             <p>
-              I build expressive interfaces with strong hierarchy, fluid motion,
-              polished visuals, and a sharp focus on how people feel while they
-              move through a page.
+              A portfolio experience shaped with WebGL atmosphere, elegant
+              motion, sharp typography, and performance-first interactions that
+              feel premium without feeling heavy.
+            </p>
+            <a class="button magnetic" href="#work">Explore selected work</a>
+          </div>
+        </div>
+        <div class="hero__metrics" aria-label="Portfolio metrics">
+          <div><strong>18+</strong><span>Signature builds</span></div>
+          <div><strong>94</strong><span>Lighthouse target</span></div>
+          <div><strong>0.9s</strong><span>Motion response</span></div>
+        </div>
+      </section>
+
+      <section
+        class="manifesto section"
+        id="profile"
+        aria-label="Profile statement"
+      >
+        <p class="section-kicker">Profile</p>
+        <div class="split-heading reveal-text">
+          I design portfolio systems where visual drama, clean code, and human
+          rhythm move together.
+        </div>
+        <div class="manifesto__grid">
+          <article>
+            <span>01</span>
+            <h2>Art direction</h2>
+            <p>
+              Atmospheric compositions, tactile depth, and editorial type
+              choices that make the first five seconds unforgettable.
+            </p>
+          </article>
+          <article>
+            <span>02</span>
+            <h2>Front-end craft</h2>
+            <p>
+              Lean markup, responsive CSS, GSAP timelines, Lenis smoothing, and
+              guarded WebGL for graceful fallbacks.
+            </p>
+          </article>
+          <article>
+            <span>03</span>
+            <h2>Performance</h2>
+            <p>
+              GPU-friendly transforms, lazy media, reduced-motion support, and
+              content visibility for quiet, fluid browsing.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="marquee section" aria-label="Creative disciplines">
+        <div class="marquee__track" aria-hidden="true">
+          <span>Immersive</span><span>Portfolio</span><span>Three.js</span
+          ><span>Motion</span><span>Strategy</span><span>Design</span>
+        </div>
+        <div class="marquee__track marquee__track--reverse" aria-hidden="true">
+          <span>Responsive</span><span>Fast</span><span>Awwwards feel</span
+          ><span>WebGL</span><span>Brand systems</span>
+        </div>
+      </section>
+
+      <section class="work section" id="work" aria-label="Selected work">
+        <p class="section-kicker">Selected work</p>
+        <div class="work__list">
+          <article class="work-card" data-image="images/strat.webp">
+            <span>01</span>
+            <h2>Nocturne Studio</h2>
+            <p>
+              Luxury landing page with cinematic scroll reveals and a spatial
+              Three.js centerpiece.
+            </p>
+          </article>
+          <article class="work-card" data-image="images/illu.webp">
+            <span>02</span>
+            <h2>Orbit Archive</h2>
+            <p>
+              Editorial portfolio grid with fast filtering, magnetic
+              calls-to-action, and generous whitespace.
+            </p>
+          </article>
+          <article class="work-card" data-image="images/coffee.webp">
+            <span>03</span>
+            <h2>Signal House</h2>
+            <p>
+              Conversion-focused brand website tuned for motion, clarity, and
+              measurable launch speed.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section class="feature section" aria-label="Featured motion reel">
+        <div class="feature__media">
+          <video
+            src="videos/illustration.mp4"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="metadata"
+            poster="images/illu.webp"
+          ></video>
+        </div>
+        <div class="feature__content">
+          <p class="section-kicker">Motion language</p>
+          <h2>Soft scroll. Deep space. Zero clutter.</h2>
+          <p>
+            Every interaction is choreographed to guide attention: subtle when
+            content matters, expressive when the moment deserves emotion.
+          </p>
+        </div>
+      </section>
+
+      <section class="process section" id="process" aria-label="Design process">
+        <p class="section-kicker">Process</p>
+        <div class="process__steps">
+          <div>
+            <span>Discover</span>
+            <p>
+              Map your story, audience, conversion goals, and visual tension.
+            </p>
+          </div>
+          <div>
+            <span>Prototype</span>
+            <p>
+              Build motion systems early so the experience feels alive, not
+              decorated.
+            </p>
+          </div>
+          <div>
+            <span>Optimize</span>
+            <p>
+              Ship compressed media, clean timelines, accessible fallbacks, and
+              smooth FPS.
             </p>
           </div>
         </div>
       </section>
 
-      <section class="showcase" id="work" aria-label="Selected capabilities">
-        <p class="section-label">Selected systems</p>
-        <div class="showcase-grid">
-          <article class="showcase-card">
-            <span>01</span>
-            <h2>Immersive landing pages</h2>
-            <p>Hero scenes with parallax, contrast, and storytelling built for immediate impact.</p>
-          </article>
-          <article class="showcase-card is-tall">
-            <span>02</span>
-            <h2>Motion-led portfolios</h2>
-            <p>Scroll choreography that feels premium without hiding the content.</p>
-          </article>
-          <article class="showcase-card">
-            <span>03</span>
-            <h2>Responsive design systems</h2>
-            <p>Reusable visual rules that keep the experience sharp across every breakpoint.</p>
-          </article>
-        </div>
-      </section>
-
-      <section class="jee-main" aria-label="Interactive identity list">
-        <div class="hover-img">
-          <div class="hov-1" data-image="images/strat.webp">
-            <span>01</span><h2>Prince</h2><p>Visual direction</p>
-          </div>
-          <div class="hov-1" data-image="images/illu.webp">
-            <span>02</span><h2>Kumar</h2><p>Digital storytelling</p>
-          </div>
-          <div class="hov-1" data-image="images/coffee.webp">
-            <span>03</span><h2>Coder</h2><p>Front-end craft</p>
-          </div>
-        </div>
-      </section>
-
-      <section class="strategy" aria-label="Design pillars">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M14.5895 16.0032L5.98291 7.39664L7.39712 5.98242L16.0037 14.589V7.00324H18.0037V18.0032H7.00373V16.0032H14.5895Z"></path></svg>
-        <p class="section-label">Creative principles</p>
-        <div class="strategy-txt"><img src="images/strat.webp" alt="" loading="lazy" decoding="async" /><div class="strat-1"><h1>Empowerment</h1><h1>Empowerment</h1></div><img src="images/blue.webp" alt="" loading="lazy" decoding="async" /></div>
-        <div class="strategy-txt"><img src="images/illu.webp" alt="" loading="lazy" decoding="async" /><div class="strat-1"><h1>Innovation</h1><h1>Innovation</h1></div><img src="images/man.webp" alt="" loading="lazy" decoding="async" /></div>
-        <div class="strategy-txt"><img src="images/coffee.webp" alt="" loading="lazy" decoding="async" /><div class="strat-1"><h1>Elevation</h1><h1>Elevation</h1></div><img src="images/leaves.webp" alt="" loading="lazy" decoding="async" /></div>
-      </section>
-
-      <footer class="footer">
-        <h2>Have a brave idea?</h2>
-        <a href="mailto:hello@example.com">Let’s shape it</a>
+      <footer class="footer section" id="contact">
+        <p class="section-kicker">Available for selective collaborations</p>
+        <h2>Let’s build a portfolio people remember.</h2>
+        <a class="button magnetic" href="mailto:hello@example.com"
+          >Start a project</a
+        >
       </footer>
     </main>
 
-    <script defer src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/gsap.min.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/ScrollTrigger.min.js"></script>
+    <script
+      defer
+      src="https://unpkg.com/three@0.160.0/build/three.min.js"
+    ></script>
+    <script
+      defer
+      src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"
+    ></script>
+    <script
+      defer
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/gsap.min.js"
+    ></script>
+    <script
+      defer
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/ScrollTrigger.min.js"
+    ></script>
     <script defer src="js/javascript.js"></script>
   </body>
 </html>
