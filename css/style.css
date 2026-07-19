@@ -633,15 +633,13 @@ body.cursor-play .cursor__dot {
   margin-top: 24px;
   margin-bottom: 80px;
 }
-
-.split-heading span {
-  transition: color 0.5s ease;
-}
+/* Color reveals handled via GSAP scrub */
 
 .manifesto__grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
+  perspective: 1000px;
 }
 
 .manifesto-card {
@@ -651,11 +649,11 @@ body.cursor-play .cursor__dot {
   padding: 40px 32px;
   background: var(--card-bg);
   overflow: hidden;
-  transition: transform 0.4s ease, border-color 0.4s ease;
+  transition: border-color 0.4s ease, background 0.4s ease;
+  transform-style: preserve-3d;
 }
 
 .manifesto-card:hover {
-  transform: translateY(-8px);
   border-color: rgba(250, 248, 245, 0.15);
 }
 
@@ -1054,12 +1052,14 @@ body.cursor-play .cursor__dot {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 32px;
+  perspective: 1000px;
 }
 
 .process-step {
   display: flex;
   flex-direction: column;
   position: relative;
+  transform-style: preserve-3d;
 }
 
 .process-step .step-num {

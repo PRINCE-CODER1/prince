@@ -17,7 +17,6 @@ function bootPreloader() {
   
   if (!preloader) return;
 
-  // If user prefers reduced motion, skip preloader animation
   if (prefersReducedMotion) {
     preloader.style.display = "none";
     gsap.set(".site-nav", { y: 0, autoAlpha: 1 });
@@ -27,7 +26,7 @@ function bootPreloader() {
 
   let count = 0;
   const target = 100;
-  const duration = 2.0; // 2 seconds loader
+  const duration = 2.0; 
   const incrementTime = (duration * 1000) / target;
   
   const timer = setInterval(() => {
@@ -48,14 +47,12 @@ function bootPreloader() {
 function triggerPageEntry() {
   const tl = gsap.timeline();
   
-  // Slide preloader up out of view
   tl.to(".preloader", {
     yPercent: -100,
     duration: 1.2,
     ease: "power4.inOut"
   });
 
-  // Fade and drop nav down
   tl.to(".site-nav", {
     y: 0,
     autoAlpha: 1,
@@ -63,7 +60,6 @@ function triggerPageEntry() {
     ease: "power3.out"
   }, "-=0.4");
 
-  // Reveal hero text
   tl.to(".word-mask span", {
     yPercent: 0,
     rotate: 0,
@@ -72,7 +68,6 @@ function triggerPageEntry() {
     ease: "power4.out"
   }, "-=0.8");
 
-  // Show secondary hero content
   tl.from(".hero__meta-top, .hero__footer, .hero__metrics", {
     y: 30,
     autoAlpha: 0,
@@ -102,7 +97,25 @@ function bootSmoothScroll() {
     touchMultiplier: 1.2,
   });
 
-  lenisInstance.on("scroll", ScrollTrigger.update);
+  // Track mouse coordinates to simulate pointer movements during scrolls
+  let mouseX = 0, mouseY = 0;
+  window.addEventListener("pointermove", (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  }, { passive: true });
+
+  lenisInstance.on("scroll", () => {
+    ScrollTrigger.update();
+    
+    // Simulate pointermove to update cursor states on scroll
+    const e = new PointerEvent("pointermove", {
+      clientX: mouseX,
+      clientY: mouseY,
+      bubbles: true
+    });
+    window.dispatchEvent(e);
+  });
+
   gsap.ticker.add((time) => lenisInstance.raf(time * 1000));
   gsap.ticker.lagSmoothing(0);
 }
@@ -126,10 +139,8 @@ function bootCursor() {
     return;
   }
 
-  // Hide default cursor
   document.body.style.cursor = "none";
 
-  // Set quick positions using GSAP
   const dotX = gsap.quickTo(dot, "left", { duration: 0.05, ease: "power3.out" });
   const dotY = gsap.quickTo(dot, "top", { duration: 0.05, ease: "power3.out" });
   
@@ -150,7 +161,6 @@ function bootCursor() {
     labelY(e.clientY);
   }, { passive: true });
 
-  // Handle interactive hover states
   const interactives = document.querySelectorAll("a, button, .nav-item, .explore-btn, .footer__copyright span");
   interactives.forEach(el => {
     el.addEventListener("mouseenter", () => {
@@ -161,7 +171,6 @@ function bootCursor() {
     });
   });
 
-  // Handle work items cursor label
   const workCards = document.querySelectorAll(".work-card");
   workCards.forEach(card => {
     card.addEventListener("mouseenter", () => {
@@ -173,7 +182,6 @@ function bootCursor() {
     });
   });
 
-  // Handle feature video hover state
   const featureMedia = document.querySelector(".feature__media");
   if (featureMedia) {
     const video = featureMedia.querySelector("video");
@@ -195,7 +203,6 @@ function bootCursor() {
     });
   }
 
-  // Magnetic components
   document.querySelectorAll(".magnetic").forEach((element) => {
     element.addEventListener("pointermove", (event) => {
       const rect = element.getBoundingClientRect();
@@ -222,6 +229,48 @@ function bootCursor() {
 }
 
 /* ---------------------------------------------------------------------
+   3D PARALLAX CARD TILT
+   --------------------------------------------------------------------- */
+function boot3DTilt() {
+  if (prefersReducedMotion || !isFinePointer || typeof gsap === "undefined") return;
+
+  const cards = document.querySelectorAll(".manifesto-card, .process-step");
+  cards.forEach(card => {
+    card.addEventListener("mousemove", (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left; 
+      const y = e.clientY - rect.top;  
+      
+      const xPercent = (x / rect.width - 0.5) * 2; 
+      const yPercent = (y / rect.height - 0.5) * 2; 
+      
+      gsap.to(card, {
+        rotateY: xPercent * 10, // Max 10 deg rotation
+        rotateX: -yPercent * 10,
+        x: xPercent * 6,       // Subtle translation drift
+        y: yPercent * 6,
+        transformPerspective: 1000,
+        duration: 0.3,
+        ease: "power2.out",
+        overwrite: "auto"
+      });
+    });
+    
+    card.addEventListener("mouseleave", () => {
+      gsap.to(card, {
+        rotateY: 0,
+        rotateX: 0,
+        x: 0,
+        y: 0,
+        duration: 0.5,
+        ease: "power3.out",
+        overwrite: "auto"
+      });
+    });
+  });
+}
+
+/* ---------------------------------------------------------------------
    HORIZONTAL PINNED SCROLL (Selected Work)
    --------------------------------------------------------------------- */
 function bootHorizontalScroll() {
@@ -229,14 +278,11 @@ function bootHorizontalScroll() {
     return;
   }
 
-  // Create matchMedia listener to only activate horizontal scroll on desktop screens
   const isDesktop = window.matchMedia("(min-width: 821px)");
   let workCtx;
 
   function initScrollTrigger(e) {
     if (workCtx) workCtx.revert();
-
-    // Revert context if not desktop
     if (!e.matches) return;
 
     workCtx = gsap.context(() => {
@@ -244,23 +290,23 @@ function bootHorizontalScroll() {
       const horizontalWrap = document.querySelector(".work__horizontal-wrap");
       if (!workSection || !horizontalWrap) return;
 
-      const scrollAmount = horizontalWrap.scrollWidth - window.innerWidth;
+      // Dynamic calculation getter function to prevent resize jumps
+      const getScrollAmount = () => horizontalWrap.scrollWidth - window.innerWidth;
 
-      // Pin the section and animate horizontal wrap leftwards
       const horizontalTween = gsap.to(horizontalWrap, {
-        x: -scrollAmount,
+        x: () => -getScrollAmount(),
         ease: "none",
         scrollTrigger: {
           trigger: ".work",
           pin: true,
           scrub: 1,
           start: "top top",
-          end: () => `+=${scrollAmount}`,
+          end: () => `+=${getScrollAmount()}`,
           invalidateOnRefresh: true,
         }
       });
 
-      // Parallax effect on work card images inside horizontal slides
+      // Dynamic Parallax effect on images
       gsap.utils.toArray(".work-card__media img").forEach(img => {
         gsap.fromTo(img, {
           xPercent: -8,
@@ -296,14 +342,12 @@ function bootThreeScene() {
   )
     return;
 
-  // Custom Shaders for Morphing glass/liquid sphere
   const vertexShaderSource = `
     uniform float uTime;
     varying vec3 vNormal;
     varying vec3 vPosition;
     varying vec2 vUv;
     
-    // Simple 3D math displacement to simulate organic fluid motion
     float getDisplacement(vec3 p) {
       float d = sin(p.x * 2.5 + uTime * 0.8) * cos(p.y * 2.0 + uTime * 0.6) * 0.15;
       d += sin(p.z * 1.8 - uTime * 0.5) * 0.1;
@@ -329,20 +373,16 @@ function bootThreeScene() {
     varying vec2 vUv;
     
     void main() {
-      // Fresnel reflection factor
       vec3 viewDir = normalize(vec3(0.0, 0.0, 1.0));
       float fresnel = pow(1.0 - max(dot(vNormal, viewDir), 0.0), 2.5);
       
-      // Gradient vectors shifting colors smoothly
-      vec3 colorBlue = vec3(0.31, 0.44, 0.91);   // #4F70E7 Electric Blue
-      vec3 colorOrange = vec3(1.0, 0.36, 0.13); // #FF5D22 Orange
-      vec3 colorLime = vec3(0.71, 1.0, 0.25);   // #B6FF40 Lime
+      vec3 colorBlue = vec3(0.31, 0.44, 0.91);   
+      vec3 colorOrange = vec3(1.0, 0.36, 0.13); 
+      vec3 colorLime = vec3(0.71, 1.0, 0.25);   
       
-      // Shift colors based on normal position and time
       vec3 finalGrad = mix(colorBlue, colorOrange, vNormal.x * 0.5 + 0.5);
       finalGrad = mix(finalGrad, colorLime, sin(uTime * 0.3) * 0.3 + 0.3);
       
-      // Add specular gloss highlights and fresnel rim glow
       vec3 outputColor = finalGrad + vec3(fresnel * 0.7);
       
       gl_FragColor = vec4(outputColor, 0.15 + fresnel * 0.75);
@@ -362,7 +402,6 @@ function bootThreeScene() {
   const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
   camera.position.z = 6;
 
-  // Blob geometry & shader material
   const geometry = new THREE.IcosahedronGeometry(1.6, 48);
   const material = new THREE.ShaderMaterial({
     vertexShader: vertexShaderSource,
@@ -379,14 +418,13 @@ function bootThreeScene() {
   const orb = new THREE.Mesh(geometry, material);
   scene.add(orb);
 
-  // Add surrounding stars vortex
+  // Surrounded particles
   const starsCount = 450;
   const starsGeometry = new THREE.BufferGeometry();
   const starsPositions = new Float32Array(starsCount * 3);
   const starsSpeeds = [];
 
   for (let i = 0; i < starsCount * 3; i += 3) {
-    // Generate star coordinates in a cylindrical envelope
     const radius = 2.0 + Math.random() * 8.0;
     const angle = Math.random() * Math.PI * 2;
     starsPositions[i] = Math.cos(angle) * radius;
@@ -396,8 +434,7 @@ function bootThreeScene() {
     starsSpeeds.push({
       radius,
       angle,
-      speed: 0.05 + Math.random() * 0.12,
-      yOffset: (Math.random() - 0.5) * 0.1
+      speed: 0.05 + Math.random() * 0.12
     });
   }
 
@@ -411,10 +448,8 @@ function bootThreeScene() {
   const stars = new THREE.Points(starsGeometry, starsMaterial);
   scene.add(stars);
 
-  // Ambient lighting for standard mesh blends
   scene.add(new THREE.AmbientLight(0xffffff, 0.2));
 
-  // Handle Resize
   const handleResize = () => {
     const w = window.innerWidth;
     const h = window.innerHeight;
@@ -424,53 +459,92 @@ function bootThreeScene() {
   };
   window.addEventListener("resize", handleResize, { passive: true });
 
-  // Gentle floating hover reaction tracking mouse coords
-  let targetMouseX = 0;
-  let targetMouseY = 0;
-  let currentMouseX = 0;
-  let currentMouseY = 0;
+  let targetMouseX = 0, targetMouseY = 0;
+  let currentMouseX = 0, currentMouseY = 0;
 
   window.addEventListener("mousemove", (e) => {
     targetMouseX = (e.clientX / window.innerWidth - 0.5) * 1.2;
     targetMouseY = -(e.clientY / window.innerHeight - 0.5) * 1.2;
   }, { passive: true });
 
-  // Setup Scroll Choreography with GSAP
-  // Fluidly repositions/scales the WebGL blob as user scrolls down different sections
-  gsap.timeline({
+  /* Section-by-Section Precise WebGL Blob Choreography */
+  // Transition to profile
+  gsap.to(orb.position, {
+    x: 1.8, y: 0.2, z: 0,
     scrollTrigger: {
-      trigger: "body",
-      start: "top top",
-      end: "bottom bottom",
-      scrub: 1.5,
+      trigger: ".manifesto",
+      start: "top bottom",
+      end: "top top",
+      scrub: 1,
     }
-  })
-  .to(orb.position, { x: 1.8, y: 0.2, z: 0 }, "profile")
-  .to(orb.scale, { x: 0.8, y: 0.8, z: 0.8 }, "profile")
-  
-  .to(orb.position, { x: -1.6, y: -0.2, z: -1 }, "work")
-  .to(orb.scale, { x: 1.1, y: 1.1, z: 1.1 }, "work")
-  
-  .to(orb.position, { x: 0, y: -1.2, z: 1 }, "contact")
-  .to(orb.scale, { x: 2.2, y: 2.2, z: 2.2 }, "contact");
+  });
+  gsap.to(orb.scale, {
+    x: 0.8, y: 0.8, z: 0.8,
+    scrollTrigger: {
+      trigger: ".manifesto",
+      start: "top bottom",
+      end: "top top",
+      scrub: 1,
+    }
+  });
 
-  // Main render loop
+  // Transition to work
+  gsap.to(orb.position, {
+    x: -1.6, y: -0.2, z: -1,
+    scrollTrigger: {
+      trigger: ".work",
+      start: "top bottom",
+      end: "top top",
+      scrub: 1,
+    }
+  });
+  gsap.to(orb.scale, {
+    x: 1.1, y: 1.1, z: 1.1,
+    scrollTrigger: {
+      trigger: ".work",
+      start: "top bottom",
+      end: "top top",
+      scrub: 1,
+    }
+  });
+
+  // Transition to footer
+  gsap.to(orb.position, {
+    x: 0, y: -1.2, z: 1,
+    scrollTrigger: {
+      trigger: ".footer",
+      start: "top bottom",
+      end: "top center",
+      scrub: 1,
+    }
+  });
+  gsap.to(orb.scale, {
+    x: 2.2, y: 2.2, z: 2.2,
+    scrollTrigger: {
+      trigger: ".footer",
+      start: "top bottom",
+      end: "top center",
+      scrub: 1,
+    }
+  });
+
   const clock = new THREE.Clock();
   renderer.setAnimationLoop(() => {
     const elapsed = clock.getElapsedTime();
     material.uniforms.uTime.value = elapsed;
 
-    // Orbit/rotation of the main core
     orb.rotation.y = elapsed * 0.15;
     orb.rotation.z = elapsed * 0.08;
 
-    // Hover inertia tracking
     currentMouseX += (targetMouseX - currentMouseX) * 0.06;
     currentMouseY += (targetMouseY - currentMouseY) * 0.06;
     orb.position.x += currentMouseX * 0.015;
     orb.position.y += currentMouseY * 0.015;
 
-    // Spiral swirling stars vortex
+    // Vortex animation & velocity-based scale stretch
+    const velocity = lenisInstance ? lenisInstance.velocity : 0;
+    stars.scale.y = 1.0 + Math.min(Math.abs(velocity) * 0.008, 1.5);
+
     const positions = starsGeometry.attributes.position.array;
     for (let i = 0; i < starsCount; i++) {
       const idx = i * 3;
@@ -489,16 +563,35 @@ function bootThreeScene() {
 /* ---------------------------------------------------------------------
    ADDITIONAL SCROLL REVEALS & COMPONENT MICRO-ANIMATIONS
    --------------------------------------------------------------------- */
-function splitLetters(element) {
-  const fragment = document.createDocumentFragment();
+function splitTextIntoSpans(element) {
   const text = element.textContent.trim();
-  [...text].forEach((char) => {
-    const span = document.createElement("span");
-    span.textContent = char === " " ? "\u00A0" : char;
-    fragment.appendChild(span);
+  const words = text.split(/\s+/);
+  const fragment = document.createDocumentFragment();
+  
+  words.forEach((word, wordIndex) => {
+    // Create inline-block container for the word to protect word wrap
+    const wordSpan = document.createElement("span");
+    wordSpan.style.display = "inline-block";
+    wordSpan.style.whiteSpace = "nowrap";
+    
+    [...word].forEach((char) => {
+      const charSpan = document.createElement("span");
+      charSpan.textContent = char;
+      charSpan.style.display = "inline-block";
+      wordSpan.appendChild(charSpan);
+    });
+    
+    fragment.appendChild(wordSpan);
+    
+    // Add normal breakable space between words
+    if (wordIndex < words.length - 1) {
+      const spaceNode = document.createTextNode(" ");
+      fragment.appendChild(spaceNode);
+    }
   });
+  
   element.replaceChildren(fragment);
-  return element.querySelectorAll("span");
+  return element.querySelectorAll("span > span"); // Return target characters to animate
 }
 
 function bootScrollTriggers() {
@@ -506,12 +599,11 @@ function bootScrollTriggers() {
     return;
   }
 
-  // Heading split text reveals
   document.querySelectorAll(".reveal-text").forEach((element) => {
-    const spans = splitLetters(element);
+    const spans = splitTextIntoSpans(element);
     gsap.to(spans, {
-      color: "#FAF8F5", // paint into foreground color
-      stagger: 0.015,
+      color: "#FAF8F5", 
+      stagger: 0.012,
       scrollTrigger: {
         trigger: element,
         start: "top 80%",
@@ -521,7 +613,6 @@ function bootScrollTriggers() {
     });
   });
 
-  // Marquee track scrolling speeds
   gsap.to(".marquee__track:not(.marquee__track--reverse)", {
     xPercent: -20,
     ease: "none",
@@ -544,7 +635,6 @@ function bootScrollTriggers() {
     },
   });
 
-  // Scale clip expansion for the cinematic video showcase
   gsap.fromTo(".feature__media", 
     { clipPath: "inset(12% 8% round 32px)", scale: 0.95 },
     {
@@ -559,7 +649,6 @@ function bootScrollTriggers() {
     }
   );
 
-  // Activate timeline highlights in process section
   document.querySelectorAll(".process-step").forEach((step) => {
     ScrollTrigger.create({
       trigger: step,
@@ -569,7 +658,6 @@ function bootScrollTriggers() {
     });
   });
 
-  // Back to top button trigger in footer
   const backToTop = document.querySelector(".footer__copyright span:last-child");
   if (backToTop) {
     backToTop.addEventListener("click", () => {
@@ -589,6 +677,7 @@ window.addEventListener("DOMContentLoaded", () => {
   bootPreloader();
   bootSmoothScroll();
   bootCursor();
+  boot3DTilt();
   bootHorizontalScroll();
   bootThreeScene();
   bootScrollTriggers();
