@@ -1,386 +1,878 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Prince Kumar — Creative Developer and digital designer crafting high-performance, immersive portfolio experiences."
+      content="Prince Kumar — Creative Developer crafting ultra-premium, cinematic digital experiences with cutting-edge web technologies."
     />
-    
+    <meta name="theme-color" content="#0A0A0A" />
+    <meta property="og:title" content="Prince Kumar — Creative Developer" />
+    <meta property="og:description" content="Crafting cinematic digital experiences that push the boundaries of web technology." />
+    <meta property="og:type" content="website" />
+
     <!-- Premium Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Syne:wght@700;800&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
-    
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Syne:wght@700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
     <link rel="stylesheet" href="css/style.css" />
     <link rel="icon" type="image/png" href="images/mars.png" />
-    <title>Prince Kumar — Immersive Portfolio & Digital Gravity</title>
+    <title>Prince Kumar — Creative Developer &amp; Digital Architect</title>
   </head>
   <body>
-    <!-- Premium Custom Cursor -->
+    <!-- ═══════════ NOISE OVERLAY ═══════════ -->
+    <div class="noise" aria-hidden="true"></div>
+
+    <!-- ═══════════ CUSTOM CURSOR ═══════════ -->
     <div class="cursor" aria-hidden="true">
       <div class="cursor__dot"></div>
       <div class="cursor__ring"></div>
-      <span class="cursor__label">VIEW</span>
     </div>
 
-    <!-- Interactive Preloader -->
+    <!-- ═══════════ CURSOR GLOW ═══════════ -->
+    <div class="cursor-glow" aria-hidden="true"></div>
+
+    <!-- ═══════════ PRELOADER ═══════════ -->
     <div class="preloader" id="preloader">
-      <div class="preloader__progress-bar"></div>
-      <div class="preloader__inner">
-        <div class="preloader__meta">PRINCE KUMAR &copy; 2026</div>
-        <div class="preloader__center">
-          <div class="preloader__title">
-            <span class="preloader__word">CREATIVE</span>
-            <span class="preloader__word">DEVELOPMENT</span>
-          </div>
-          <div class="preloader__percent">
-            <span id="preloader-percent">00</span><span class="unit">%</span>
-          </div>
+      <div class="preloader__bar">
+        <div class="preloader__bar-fill"></div>
+      </div>
+      <div class="preloader__content">
+        <div class="preloader__logo">
+          <span class="preloader__name">PRINCE</span>
+          <span class="preloader__name preloader__name--accent">KUMAR</span>
         </div>
-        <div class="preloader__footer">
-          <span>PORTFOLIO REDESIGN</span>
-          <span>LOADING ASSETS</span>
+        <div class="preloader__counter">
+          <span id="preloader-count">0</span><span class="preloader__percent">%</span>
         </div>
+        <p class="preloader__tag">Loading Experience</p>
+      </div>
+      <div class="preloader__meta">
+        <span>Portfolio 2026</span>
+        <span>Creative Development</span>
       </div>
     </div>
 
-    <div class="noise" aria-hidden="true"></div>
+    <!-- ═══════════ THREE.JS CANVAS ═══════════ -->
     <canvas id="webgl" aria-hidden="true"></canvas>
 
-    <!-- Sleek Navigation Capsule -->
-    <nav class="site-nav" aria-label="Primary navigation">
-      <a class="brand" href="#home" aria-label="Prince Kumar home">
-        <span>PRINCE</span><span>KUMAR</span>
+    <!-- ═══════════ FLOATING GRADIENT ORBS ═══════════ -->
+    <div class="bg-orbs" aria-hidden="true">
+      <div class="orb orb--1"></div>
+      <div class="orb orb--2"></div>
+      <div class="orb orb--3"></div>
+    </div>
+
+    <!-- ═══════════ NAVIGATION ═══════════ -->
+    <nav class="nav" id="nav" aria-label="Primary navigation">
+      <a class="nav__brand" href="#hero" aria-label="Home">
+        <span class="nav__brand-text">PRINCE</span><span class="nav__brand-dot">.</span>
       </a>
-      <div class="nav-links">
-        <a href="#profile" class="nav-item">Profile</a>
-        <a href="#work" class="nav-item">Work</a>
-        <a href="#process" class="nav-item">Process</a>
-        <a href="#contact" class="nav-item">Contact</a>
+      <div class="nav__links" id="nav-links">
+        <a href="#about" class="nav__link">About</a>
+        <a href="#skills" class="nav__link">Skills</a>
+        <a href="#projects" class="nav__link">Projects</a>
+        <a href="#services" class="nav__link">Services</a>
+        <a href="#contact" class="nav__link">Contact</a>
       </div>
+      <a href="#contact" class="nav__cta btn btn--primary btn--sm">
+        <span>Let's Talk</span>
+      </a>
+      <button class="nav__burger" id="nav-burger" aria-label="Toggle menu" aria-expanded="false">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
     </nav>
 
+    <!-- ═══════════ MOBILE MENU ═══════════ -->
+    <div class="mobile-menu" id="mobile-menu">
+      <div class="mobile-menu__inner">
+        <a href="#about" class="mobile-menu__link">About</a>
+        <a href="#skills" class="mobile-menu__link">Skills</a>
+        <a href="#projects" class="mobile-menu__link">Projects</a>
+        <a href="#services" class="mobile-menu__link">Services</a>
+        <a href="#contact" class="mobile-menu__link">Contact</a>
+      </div>
+    </div>
+
+    <!-- ═══════════ MAIN CONTENT ═══════════ -->
     <main id="smooth-wrapper">
       <div id="smooth-content">
-        <!-- Hero Section -->
-        <section class="hero section" id="home" aria-label="Hero Section">
-          <div class="hero__backdrop">
-            <img
-              src="images/night.webp"
-              alt="Cinematic midnight landscape"
-              fetchpriority="high"
-              decoding="async"
-            />
-          </div>
-          <div class="hero__glow" aria-hidden="true"></div>
-          
-          <div class="hero__content">
-            <div class="hero__meta-top">
-              <span class="eyebrow">Creative Developer &amp; Motion Artist</span>
-              <span class="portfolio-tag">Available for Freelance</span>
-            </div>
-            
-            <h1 class="reveal-h1">
-              <span class="word-mask"><span>DIGITAL</span></span>
-              <span class="word-mask"><span>GRAVITY FOR</span></span>
-              <span class="word-mask"><span class="highlight-text">BOLD BRANDS</span></span>
-            </h1>
-            
-            <div class="hero__footer">
-              <p>
-                A portfolio experience shaped with WebGL atmosphere, elegant
-                motion, sharp typography, and performance-first interactions that
-                feel premium without feeling heavy.
+
+        <!-- ─── HERO ─── -->
+        <section class="hero section" id="hero">
+          <div class="hero__bg-glow"></div>
+
+          <div class="container hero__grid">
+            <div class="hero__content">
+              <div class="hero__meta">
+                <span class="kicker">Creative Developer &amp; Digital Architect</span>
+                <span class="hero__avail">
+                  <span class="pulse-dot"></span> Available for Freelance
+                </span>
+              </div>
+
+              <h1 class="hero__heading">
+                <span class="word-wrap"><span class="word">Crafting</span></span>
+                <span class="word-wrap"><span class="word">Digital</span></span>
+                <span class="word-wrap"><span class="word gradient-text">Experiences</span></span>
+                <span class="word-wrap"><span class="word">That Inspire</span></span>
+              </h1>
+
+              <p class="hero__desc">
+                I design and build ultra-premium web experiences where every pixel, animation,
+                and interaction is intentionally crafted to create lasting impressions.
               </p>
+
               <div class="hero__actions">
-                <a class="button magnetic explore-btn" href="#work">
-                  <span>Explore selected work</span>
-                  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 4V20M12 20L18 14M12 20L6 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <a href="#projects" class="btn btn--primary magnetic">
+                  <span>Explore My Work</span>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 4v16m0 0l6-6m-6 6l-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </a>
+                <a href="#about" class="btn btn--outline magnetic">
+                  <span>Learn More</span>
                 </a>
               </div>
             </div>
+
+            <!-- Hero Stats -->
+            <div class="hero__stats">
+              <div class="stat-card glass">
+                <strong class="stat-card__num" data-count="50">0</strong>
+                <span class="stat-card__plus">+</span>
+                <span class="stat-card__label">Projects Delivered</span>
+              </div>
+              <div class="stat-card glass">
+                <strong class="stat-card__num" data-count="30">0</strong>
+                <span class="stat-card__plus">+</span>
+                <span class="stat-card__label">Happy Clients</span>
+              </div>
+              <div class="stat-card glass">
+                <strong class="stat-card__num" data-count="5">0</strong>
+                <span class="stat-card__plus">+</span>
+                <span class="stat-card__label">Years Experience</span>
+              </div>
+            </div>
           </div>
-          
-          <div class="hero__metrics" aria-label="Portfolio metrics">
-            <div class="metric-card"><strong>18+</strong><span>Signature builds</span></div>
-            <div class="metric-card"><strong>94</strong><span>Lighthouse target</span></div>
-            <div class="metric-card"><strong>0.9s</strong><span>Motion response</span></div>
+
+          <!-- Floating shapes -->
+          <div class="hero__shapes" aria-hidden="true">
+            <div class="shape shape--circle"></div>
+            <div class="shape shape--ring"></div>
+            <div class="shape shape--square"></div>
+          </div>
+
+          <!-- Scroll indicator -->
+          <div class="hero__scroll">
+            <div class="scroll-line"></div>
+            <span>Scroll</span>
           </div>
         </section>
 
-        <!-- Profile Section -->
-        <section
-          class="manifesto section"
-          id="profile"
-          aria-label="Profile Statement"
-        >
+        <!-- ─── MARQUEE ─── -->
+        <section class="marquee" aria-label="Skills marquee">
+          <div class="marquee__track">
+            <span>Creative Development</span><span class="marquee__dot">◆</span>
+            <span>UI/UX Design</span><span class="marquee__dot">◆</span>
+            <span>Three.js</span><span class="marquee__dot">◆</span>
+            <span>Motion Design</span><span class="marquee__dot">◆</span>
+            <span>WebGL</span><span class="marquee__dot">◆</span>
+            <span>Brand Strategy</span><span class="marquee__dot">◆</span>
+            <span>Creative Development</span><span class="marquee__dot">◆</span>
+            <span>UI/UX Design</span><span class="marquee__dot">◆</span>
+            <span>Three.js</span><span class="marquee__dot">◆</span>
+            <span>Motion Design</span><span class="marquee__dot">◆</span>
+            <span>WebGL</span><span class="marquee__dot">◆</span>
+            <span>Brand Strategy</span><span class="marquee__dot">◆</span>
+          </div>
+          <div class="marquee__track marquee__track--reverse">
+            <span>Performance</span><span class="marquee__dot">◆</span>
+            <span>Responsive</span><span class="marquee__dot">◆</span>
+            <span>Awwwards Quality</span><span class="marquee__dot">◆</span>
+            <span>GSAP</span><span class="marquee__dot">◆</span>
+            <span>Accessibility</span><span class="marquee__dot">◆</span>
+            <span>Innovation</span><span class="marquee__dot">◆</span>
+            <span>Performance</span><span class="marquee__dot">◆</span>
+            <span>Responsive</span><span class="marquee__dot">◆</span>
+            <span>Awwwards Quality</span><span class="marquee__dot">◆</span>
+            <span>GSAP</span><span class="marquee__dot">◆</span>
+            <span>Accessibility</span><span class="marquee__dot">◆</span>
+            <span>Innovation</span><span class="marquee__dot">◆</span>
+          </div>
+        </section>
+
+        <!-- ─── ABOUT ─── -->
+        <section class="about section" id="about">
           <div class="container">
-            <p class="section-kicker">Profile</p>
-            <h2 class="split-heading reveal-text">
-              I design portfolio systems where visual drama, clean code, and human rhythm move together.
-            </h2>
-            
-            <div class="manifesto__grid">
-              <article class="manifesto-card">
-                <span class="card-num">01</span>
-                <h3>Art direction</h3>
-                <p>
-                  Atmospheric compositions, tactile depth, and editorial type
-                  choices that make the first five seconds unforgettable.
-                </p>
-                <div class="card-glow"></div>
-              </article>
-              <article class="manifesto-card">
-                <span class="card-num">02</span>
-                <h3>Front-end craft</h3>
-                <p>
-                  Lean markup, responsive CSS, GSAP timelines, Lenis smoothing, and
-                  guarded WebGL for graceful fallbacks.
-                </p>
-                <div class="card-glow"></div>
-              </article>
-              <article class="manifesto-card">
-                <span class="card-num">03</span>
-                <h3>Performance</h3>
-                <p>
-                  GPU-friendly transforms, lazy media, reduced-motion support, and
-                  content visibility for quiet, fluid browsing.
-                </p>
-                <div class="card-glow"></div>
-              </article>
+            <div class="section-header">
+              <span class="kicker reveal-up">About Me</span>
+              <h2 class="heading-section reveal-up">
+                I design systems where visual drama, clean code,
+                and human rhythm move together.
+              </h2>
             </div>
-          </div>
-        </section>
 
-        <!-- Marquee Section -->
-        <section class="marquee section" aria-label="Creative disciplines">
-          <div class="marquee__track" aria-hidden="true">
-            <span>Immersive</span><span>•</span><span>Portfolio</span><span>•</span><span>Three.js</span><span>•</span><span>Motion</span><span>•</span><span>Strategy</span><span>•</span><span>Design</span><span>•</span>
-          </div>
-          <div class="marquee__track marquee__track--reverse" aria-hidden="true">
-            <span>Responsive</span><span>•</span><span>Fast</span><span>•</span><span>Awwwards feel</span><span>•</span><span>WebGL</span><span>•</span><span>Brand systems</span><span>•</span>
-          </div>
-        </section>
+            <div class="about__grid">
+              <div class="about__portrait reveal-up">
+                <div class="about__img-wrap">
+                  <img src="images/man.webp" alt="Prince Kumar — Creative Developer" loading="lazy" />
+                  <div class="about__img-overlay"></div>
+                </div>
+                <div class="about__exp-badge glass">
+                  <strong>5+</strong>
+                  <span>Years of<br/>Experience</span>
+                </div>
+              </div>
 
-        <!-- Selected Work Horizontal Gallery Section -->
-        <section class="work section" id="work" aria-label="Selected work">
-          <div class="work__pinned">
-            <div class="work__header">
-              <p class="section-kicker">Selected work</p>
-              <h2 class="work-title">Crafted Digital Space</h2>
-            </div>
-            
-            <div class="work__horizontal-wrap">
-              <!-- Slide 0: Intro -->
-              <div class="work__slide intro-slide">
-                <div class="intro-slide__content">
-                  <span class="slide-num">00</span>
-                  <h3>CREATIVE ARCHIVE</h3>
-                  <p>A curated selection of projects exploring custom WebGL shaders, premium layout transitions, and high-fidelity physics.</p>
-                  <div class="scroll-hint">
-                    <span class="hint-arrow">→</span>
-                    <span>Scroll down to slide</span>
+              <div class="about__info">
+                <p class="about__bio reveal-up">
+                  I'm Prince Kumar, a creative developer passionate about building digital experiences
+                  that sit at the intersection of art and engineering. I specialize in crafting
+                  immersive websites with cinematic animations, thoughtful interactions, and
+                  pixel-perfect design.
+                </p>
+                <p class="about__bio reveal-up">
+                  My work combines editorial typography, atmospheric compositions, and
+                  performance-first code to create experiences that feel premium without feeling heavy.
+                  Every project is an opportunity to push boundaries and create something unforgettable.
+                </p>
+
+                <!-- Stats Grid -->
+                <div class="about__stats">
+                  <div class="about-stat reveal-up">
+                    <span class="about-stat__num" data-count="50">0</span>
+                    <span class="about-stat__suffix">+</span>
+                    <span class="about-stat__label">Projects</span>
+                  </div>
+                  <div class="about-stat reveal-up">
+                    <span class="about-stat__num" data-count="30">0</span>
+                    <span class="about-stat__suffix">+</span>
+                    <span class="about-stat__label">Clients</span>
+                  </div>
+                  <div class="about-stat reveal-up">
+                    <span class="about-stat__num" data-count="10">0</span>
+                    <span class="about-stat__suffix">+</span>
+                    <span class="about-stat__label">Awards</span>
+                  </div>
+                  <div class="about-stat reveal-up">
+                    <span class="about-stat__num" data-count="99">0</span>
+                    <span class="about-stat__suffix">%</span>
+                    <span class="about-stat__label">Satisfaction</span>
                   </div>
                 </div>
               </div>
-              
-              <!-- Slide 1: Project 1 -->
-              <div class="work__slide">
-                <article class="work-card" data-image="images/strat.webp">
-                  <div class="work-card__inner">
-                    <div class="work-card__media">
-                      <div class="work-card__image-reveal">
-                        <img src="images/strat.webp" alt="Nocturne Studio landing page representation" loading="lazy" />
-                      </div>
-                    </div>
-                    <div class="work-card__info">
-                      <span class="work-card__num">01</span>
-                      <h3 class="work-card__title">Nocturne Studio</h3>
-                      <p class="work-card__desc">
-                        Luxury landing page with cinematic scroll reveals and a spatial
-                        Three.js centerpiece.
-                      </p>
-                      <div class="work-card__tags">
-                        <span>WebGL</span><span>GSAP</span><span>Editorial</span>
-                      </div>
-                      <a href="#" class="work-card__link button magnetic">
-                        <span>Explore Project</span>
-                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                      </a>
-                    </div>
-                  </div>
-                </article>
-              </div>
-
-              <!-- Slide 2: Project 2 -->
-              <div class="work__slide">
-                <article class="work-card" data-image="images/illu.webp">
-                  <div class="work-card__inner">
-                    <div class="work-card__media">
-                      <div class="work-card__image-reveal">
-                        <img src="images/illu.webp" alt="Orbit Archive representation" loading="lazy" />
-                      </div>
-                    </div>
-                    <div class="work-card__info">
-                      <span class="work-card__num">02</span>
-                      <h3 class="work-card__title">Orbit Archive</h3>
-                      <p class="work-card__desc">
-                        Editorial portfolio grid with fast filtering, magnetic
-                        calls-to-action, and generous whitespace.
-                      </p>
-                      <div class="work-card__tags">
-                        <span>Interaction</span><span>CSS Grid</span><span>Minimal</span>
-                      </div>
-                      <a href="#" class="work-card__link button magnetic">
-                        <span>Explore Project</span>
-                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                      </a>
-                    </div>
-                  </div>
-                </article>
-              </div>
-
-              <!-- Slide 3: Project 3 -->
-              <div class="work__slide">
-                <article class="work-card" data-image="images/coffee.webp">
-                  <div class="work-card__inner">
-                    <div class="work-card__media">
-                      <div class="work-card__image-reveal">
-                        <img src="images/coffee.webp" alt="Signal House conversion website representation" loading="lazy" />
-                      </div>
-                    </div>
-                    <div class="work-card__info">
-                      <span class="work-card__num">03</span>
-                      <h3 class="work-card__title">Signal House</h3>
-                      <p class="work-card__desc">
-                        Conversion-focused brand website tuned for motion, clarity, and
-                        measurable launch speed.
-                      </p>
-                      <div class="work-card__tags">
-                        <span>Performance</span><span>SVG Animation</span><span>Optimization</span>
-                      </div>
-                      <a href="#" class="work-card__link button magnetic">
-                        <span>Explore Project</span>
-                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                      </a>
-                    </div>
-                  </div>
-                </article>
-              </div>
             </div>
           </div>
         </section>
 
-        <!-- Feature Section (Motion Reel) -->
-        <section class="feature section" aria-label="Featured motion reel">
-          <div class="feature__container">
-            <div class="feature__media">
-              <video
-                src="videos/illustration.mp4"
-                autoplay
-                muted
-                loop
-                playsinline
-                preload="metadata"
-                poster="images/illu.webp"
-              ></video>
-              <div class="feature__play-btn magnetic">
-                <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M8 5v14l11-7z" />
-                </svg>
-              </div>
-            </div>
-            <div class="feature__content">
-              <p class="section-kicker">Motion language</p>
-              <h2>Soft scroll. Deep space. Zero clutter.</h2>
-              <p>
-                Every interaction is choreographed to guide attention: subtle when
-                content matters, expressive when the moment deserves emotion.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <!-- Process Section -->
-        <section class="process section" id="process" aria-label="Design process">
+        <!-- ─── SKILLS ─── -->
+        <section class="skills section" id="skills">
           <div class="container">
-            <p class="section-kicker">Process</p>
-            <h2 class="process-title">Methodology</h2>
-            <div class="process__steps">
-              <div class="process-step">
-                <span class="step-num">01</span>
-                <h3>Discover</h3>
-                <p>
-                  Map your story, audience, conversion goals, and visual tension.
-                </p>
-                <div class="step-progress-line"></div>
+            <div class="section-header">
+              <span class="kicker reveal-up">Expertise</span>
+              <h2 class="heading-section reveal-up">Skills &amp; Technologies</h2>
+            </div>
+
+            <div class="skills__grid">
+              <div class="skill-card glass glow-border reveal-up">
+                <div class="skill-card__icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                </div>
+                <h3 class="skill-card__title">Frontend Development</h3>
+                <p class="skill-card__desc">React, Next.js, Vue, TypeScript, Tailwind CSS — building scalable, performant interfaces.</p>
+                <div class="skill-card__bar"><div class="skill-card__bar-fill" data-width="95"></div></div>
               </div>
-              <div class="process-step">
-                <span class="step-num">02</span>
-                <h3>Prototype</h3>
-                <p>
-                  Build motion systems early so the experience feels alive, not
-                  decorated.
-                </p>
-                <div class="step-progress-line"></div>
+
+              <div class="skill-card glass glow-border reveal-up">
+                <div class="skill-card__icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+                </div>
+                <h3 class="skill-card__title">Creative Animation</h3>
+                <p class="skill-card__desc">GSAP, Framer Motion, CSS animations — crafting cinematic motion that enhances storytelling.</p>
+                <div class="skill-card__bar"><div class="skill-card__bar-fill" data-width="92"></div></div>
               </div>
-              <div class="process-step">
-                <span class="step-num">03</span>
-                <h3>Optimize</h3>
-                <p>
-                  Ship compressed media, clean timelines, accessible fallbacks, and
-                  smooth FPS.
-                </p>
-                <div class="step-progress-line"></div>
+
+              <div class="skill-card glass glow-border reveal-up">
+                <div class="skill-card__icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/><path d="M3.27 6.96L12 12.01l8.73-5.05M12 22.08V12"/></svg>
+                </div>
+                <h3 class="skill-card__title">3D &amp; WebGL</h3>
+                <p class="skill-card__desc">Three.js, React Three Fiber, GLSL shaders — immersive spatial web experiences.</p>
+                <div class="skill-card__bar"><div class="skill-card__bar-fill" data-width="88"></div></div>
+              </div>
+
+              <div class="skill-card glass glow-border reveal-up">
+                <div class="skill-card__icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+                </div>
+                <h3 class="skill-card__title">UI/UX Design</h3>
+                <p class="skill-card__desc">Figma, design systems, user research — pixel-perfect interfaces with obsessive attention to detail.</p>
+                <div class="skill-card__bar"><div class="skill-card__bar-fill" data-width="85"></div></div>
+              </div>
+
+              <div class="skill-card glass glow-border reveal-up">
+                <div class="skill-card__icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+                </div>
+                <h3 class="skill-card__title">Performance Engineering</h3>
+                <p class="skill-card__desc">Lighthouse optimization, lazy loading, code splitting — blazing fast load times.</p>
+                <div class="skill-card__bar"><div class="skill-card__bar-fill" data-width="90"></div></div>
+              </div>
+
+              <div class="skill-card glass glow-border reveal-up">
+                <div class="skill-card__icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2a10 10 0 1010 10A10 10 0 0012 2zm0 0v10l7 3.5"/></svg>
+                </div>
+                <h3 class="skill-card__title">Backend &amp; APIs</h3>
+                <p class="skill-card__desc">Node.js, Python, PostgreSQL, REST/GraphQL — robust architecture and clean APIs.</p>
+                <div class="skill-card__bar"><div class="skill-card__bar-fill" data-width="82"></div></div>
               </div>
             </div>
           </div>
         </section>
 
-        <!-- Footer Section -->
-        <footer class="footer section" id="contact">
-          <div class="footer__glow" aria-hidden="true"></div>
-          <div class="footer__content">
-            <p class="section-kicker">Available for selective collaborations</p>
-            <h2>Let’s build a portfolio people remember.</h2>
-            
-            <div class="footer__bottom">
-              <a class="button magnetic mail-btn" href="mailto:hello@example.com">
-                <span>Start a project</span>
-                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 12H19M19 12L13 6M19 12L13 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-              </a>
-              
-              <div class="footer__links">
-                <a href="#" class="magnetic">LinkedIn</a>
-                <a href="#" class="magnetic">Twitter</a>
-                <a href="#" class="magnetic">GitHub</a>
+        <!-- ─── EXPERIENCE TIMELINE ─── -->
+        <section class="experience section" id="experience">
+          <div class="container">
+            <div class="section-header">
+              <span class="kicker reveal-up">Journey</span>
+              <h2 class="heading-section reveal-up">Experience Timeline</h2>
+            </div>
+
+            <div class="timeline">
+              <div class="timeline__line"></div>
+
+              <div class="timeline__item reveal-up">
+                <div class="timeline__dot"></div>
+                <div class="timeline__card glass glow-border">
+                  <span class="timeline__year">2024 — Present</span>
+                  <h3 class="timeline__title">Senior Creative Developer</h3>
+                  <p class="timeline__company">Freelance</p>
+                  <p class="timeline__desc">Crafting premium digital experiences for global brands with cinematic web technologies. Leading end-to-end creative development projects.</p>
+                </div>
+              </div>
+
+              <div class="timeline__item timeline__item--right reveal-up">
+                <div class="timeline__dot"></div>
+                <div class="timeline__card glass glow-border">
+                  <span class="timeline__year">2022 — 2024</span>
+                  <h3 class="timeline__title">Lead Frontend Engineer</h3>
+                  <p class="timeline__company">Digital Agency</p>
+                  <p class="timeline__desc">Led a team of 8 developers building award-winning interactive websites with Three.js, GSAP, and React. Delivered 20+ client projects.</p>
+                </div>
+              </div>
+
+              <div class="timeline__item reveal-up">
+                <div class="timeline__dot"></div>
+                <div class="timeline__card glass glow-border">
+                  <span class="timeline__year">2020 — 2022</span>
+                  <h3 class="timeline__title">Creative Developer</h3>
+                  <p class="timeline__company">Tech Studio</p>
+                  <p class="timeline__desc">Developed immersive web experiences combining design thinking with performance engineering. Won 3 industry awards for creative excellence.</p>
+                </div>
+              </div>
+
+              <div class="timeline__item timeline__item--right reveal-up">
+                <div class="timeline__dot"></div>
+                <div class="timeline__card glass glow-border">
+                  <span class="timeline__year">2019 — 2020</span>
+                  <h3 class="timeline__title">Frontend Developer</h3>
+                  <p class="timeline__company">Startup</p>
+                  <p class="timeline__desc">Built responsive, high-performance applications and established the company's design system from scratch. Grew the product to 10K+ users.</p>
+                </div>
               </div>
             </div>
-            
-            <div class="footer__copyright">
-              <span>&copy; 2026 PRINCE KUMAR. ALL RIGHTS RESERVED.</span>
-              <span>BACK TO TOP ↑</span>
+          </div>
+        </section>
+
+        <!-- ─── FEATURED PROJECTS ─── -->
+        <section class="projects section" id="projects">
+          <div class="container">
+            <div class="section-header">
+              <span class="kicker reveal-up">Selected Work</span>
+              <h2 class="heading-section reveal-up">Featured Projects</h2>
+            </div>
+
+            <div class="projects__grid">
+              <!-- Project 1 -->
+              <article class="project-card reveal-up" data-color="#00D4FF">
+                <div class="project-card__media">
+                  <img src="images/strat.webp" alt="Nocturne Studio — Luxury Landing Page" loading="lazy" />
+                  <div class="project-card__overlay">
+                    <span class="project-card__view">View Project</span>
+                  </div>
+                </div>
+                <div class="project-card__info">
+                  <div class="project-card__top">
+                    <span class="project-card__cat">Web Design</span>
+                    <span class="project-card__year">2024</span>
+                  </div>
+                  <h3 class="project-card__title">Nocturne Studio</h3>
+                  <p class="project-card__desc">Luxury landing page with cinematic scroll reveals and a spatial Three.js centerpiece.</p>
+                  <div class="project-card__tags">
+                    <span>WebGL</span><span>GSAP</span><span>Editorial</span><span>Three.js</span>
+                  </div>
+                </div>
+              </article>
+
+              <!-- Project 2 -->
+              <article class="project-card reveal-up" data-color="#8B5CF6">
+                <div class="project-card__media">
+                  <img src="images/illu.webp" alt="Orbit Archive — Editorial Portfolio" loading="lazy" />
+                  <div class="project-card__overlay">
+                    <span class="project-card__view">View Project</span>
+                  </div>
+                </div>
+                <div class="project-card__info">
+                  <div class="project-card__top">
+                    <span class="project-card__cat">Portfolio</span>
+                    <span class="project-card__year">2024</span>
+                  </div>
+                  <h3 class="project-card__title">Orbit Archive</h3>
+                  <p class="project-card__desc">Editorial portfolio grid with fast filtering, magnetic CTAs, and generous whitespace.</p>
+                  <div class="project-card__tags">
+                    <span>React</span><span>Framer Motion</span><span>Minimal</span>
+                  </div>
+                </div>
+              </article>
+
+              <!-- Project 3 -->
+              <article class="project-card reveal-up" data-color="#10B981">
+                <div class="project-card__media">
+                  <img src="images/coffee.webp" alt="Signal House — Brand Website" loading="lazy" />
+                  <div class="project-card__overlay">
+                    <span class="project-card__view">View Project</span>
+                  </div>
+                </div>
+                <div class="project-card__info">
+                  <div class="project-card__top">
+                    <span class="project-card__cat">Branding</span>
+                    <span class="project-card__year">2023</span>
+                  </div>
+                  <h3 class="project-card__title">Signal House</h3>
+                  <p class="project-card__desc">Conversion-focused brand website tuned for motion, clarity, and measurable launch speed.</p>
+                  <div class="project-card__tags">
+                    <span>Performance</span><span>Next.js</span><span>Optimization</span>
+                  </div>
+                </div>
+              </article>
+
+              <!-- Project 4 -->
+              <article class="project-card reveal-up" data-color="#F59E0B">
+                <div class="project-card__media">
+                  <img src="images/leaves.webp" alt="Quantum Dashboard — Analytics Platform" loading="lazy" />
+                  <div class="project-card__overlay">
+                    <span class="project-card__view">View Project</span>
+                  </div>
+                </div>
+                <div class="project-card__info">
+                  <div class="project-card__top">
+                    <span class="project-card__cat">Web App</span>
+                    <span class="project-card__year">2023</span>
+                  </div>
+                  <h3 class="project-card__title">Quantum Dashboard</h3>
+                  <p class="project-card__desc">Real-time analytics dashboard with fluid data visualizations and premium dark interface.</p>
+                  <div class="project-card__tags">
+                    <span>React</span><span>D3.js</span><span>WebSocket</span><span>TypeScript</span>
+                  </div>
+                </div>
+              </article>
+
+              <!-- Project 5 -->
+              <article class="project-card reveal-up" data-color="#EC4899">
+                <div class="project-card__media">
+                  <img src="images/night.webp" alt="Aurora — Cross-Platform Mobile App" loading="lazy" />
+                  <div class="project-card__overlay">
+                    <span class="project-card__view">View Project</span>
+                  </div>
+                </div>
+                <div class="project-card__info">
+                  <div class="project-card__top">
+                    <span class="project-card__cat">Mobile</span>
+                    <span class="project-card__year">2023</span>
+                  </div>
+                  <h3 class="project-card__title">Aurora Mobile</h3>
+                  <p class="project-card__desc">Cross-platform mobile app with gesture-driven UI, haptic feedback, and physics-based animations.</p>
+                  <div class="project-card__tags">
+                    <span>React Native</span><span>Reanimated</span><span>Mobile</span>
+                  </div>
+                </div>
+              </article>
+
+              <!-- Project 6 -->
+              <article class="project-card reveal-up" data-color="#06B6D4">
+                <div class="project-card__media">
+                  <img src="images/blue.webp" alt="Velvet Commerce — E-Commerce Platform" loading="lazy" />
+                  <div class="project-card__overlay">
+                    <span class="project-card__view">View Project</span>
+                  </div>
+                </div>
+                <div class="project-card__info">
+                  <div class="project-card__top">
+                    <span class="project-card__cat">E-Commerce</span>
+                    <span class="project-card__year">2022</span>
+                  </div>
+                  <h3 class="project-card__title">Velvet Commerce</h3>
+                  <p class="project-card__desc">Luxury e-commerce experience with 3D product viewers and a frictionless checkout flow.</p>
+                  <div class="project-card__tags">
+                    <span>Next.js</span><span>Three.js</span><span>Stripe</span>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <!-- ─── SERVICES ─── -->
+        <section class="services section" id="services">
+          <div class="container">
+            <div class="section-header">
+              <span class="kicker reveal-up">What I Offer</span>
+              <h2 class="heading-section reveal-up">Services</h2>
+            </div>
+
+            <div class="services__grid">
+              <div class="service-card glass glow-border reveal-up">
+                <div class="service-card__num">01</div>
+                <div class="service-card__icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                </div>
+                <h3 class="service-card__title">Creative Development</h3>
+                <p class="service-card__desc">Custom-built websites with premium animations, 3D effects, and cinematic user experiences.</p>
+                <ul class="service-card__features">
+                  <li>Custom WebGL &amp; Three.js</li>
+                  <li>GSAP Scroll Animations</li>
+                  <li>Responsive &amp; Accessible</li>
+                  <li>Performance Optimized</li>
+                </ul>
+                <div class="service-card__price">From $5,000</div>
+              </div>
+
+              <div class="service-card service-card--popular glass glow-border reveal-up">
+                <div class="service-card__badge">Most Popular</div>
+                <div class="service-card__num">02</div>
+                <div class="service-card__icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+                </div>
+                <h3 class="service-card__title">UI/UX Design</h3>
+                <p class="service-card__desc">Pixel-perfect interfaces with obsessive attention to typography, spacing, and motion design.</p>
+                <ul class="service-card__features">
+                  <li>User Research &amp; Strategy</li>
+                  <li>Wireframes &amp; Prototypes</li>
+                  <li>Design Systems</li>
+                  <li>Figma Deliverables</li>
+                </ul>
+                <div class="service-card__price">From $3,000</div>
+              </div>
+
+              <div class="service-card glass glow-border reveal-up">
+                <div class="service-card__num">03</div>
+                <div class="service-card__icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                </div>
+                <h3 class="service-card__title">Full-Stack Solutions</h3>
+                <p class="service-card__desc">End-to-end development from database architecture to polished frontend experiences.</p>
+                <ul class="service-card__features">
+                  <li>Next.js &amp; React</li>
+                  <li>API Development</li>
+                  <li>Database Design</li>
+                  <li>Cloud Deployment</li>
+                </ul>
+                <div class="service-card__price">From $8,000</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ─── TESTIMONIALS ─── -->
+        <section class="testimonials section" id="testimonials">
+          <div class="container">
+            <div class="section-header">
+              <span class="kicker reveal-up">Client Voices</span>
+              <h2 class="heading-section reveal-up">What People Say</h2>
+            </div>
+          </div>
+
+          <div class="testimonials__marquee">
+            <div class="testimonials__track">
+              <!-- Testimonial 1 -->
+              <div class="testimonial-card glass">
+                <div class="testimonial-card__stars">★★★★★</div>
+                <p class="testimonial-card__text">"Prince transformed our digital presence completely. The attention to detail and animation quality is unlike anything we've seen. Our engagement increased by 300%."</p>
+                <div class="testimonial-card__author">
+                  <div class="testimonial-card__avatar">SM</div>
+                  <div>
+                    <strong>Sarah Mitchell</strong>
+                    <span>CEO, Nocturne Studio</span>
+                  </div>
+                </div>
+              </div>
+              <!-- Testimonial 2 -->
+              <div class="testimonial-card glass">
+                <div class="testimonial-card__stars">★★★★★</div>
+                <p class="testimonial-card__text">"Working with Prince was a revelation. He brought a level of craft and performance optimization that exceeded all expectations. Truly world-class work."</p>
+                <div class="testimonial-card__author">
+                  <div class="testimonial-card__avatar">JC</div>
+                  <div>
+                    <strong>James Chen</strong>
+                    <span>CTO, TechVault</span>
+                  </div>
+                </div>
+              </div>
+              <!-- Testimonial 3 -->
+              <div class="testimonial-card glass">
+                <div class="testimonial-card__stars">★★★★★</div>
+                <p class="testimonial-card__text">"The portfolio Prince built for us won an Awwwards honorable mention. His understanding of motion design and web performance is unparalleled."</p>
+                <div class="testimonial-card__author">
+                  <div class="testimonial-card__avatar">ER</div>
+                  <div>
+                    <strong>Elena Rodriguez</strong>
+                    <span>Creative Director, Orbit Agency</span>
+                  </div>
+                </div>
+              </div>
+              <!-- Testimonial 4 -->
+              <div class="testimonial-card glass">
+                <div class="testimonial-card__stars">★★★★★</div>
+                <p class="testimonial-card__text">"Prince doesn't just build websites — he crafts experiences. Every micro-interaction feels intentional and premium. Highly recommend for any serious brand."</p>
+                <div class="testimonial-card__author">
+                  <div class="testimonial-card__avatar">DP</div>
+                  <div>
+                    <strong>David Park</strong>
+                    <span>Founder, Signal House</span>
+                  </div>
+                </div>
+              </div>
+              <!-- Testimonial 5 -->
+              <div class="testimonial-card glass">
+                <div class="testimonial-card__stars">★★★★★</div>
+                <p class="testimonial-card__text">"Exceptional work on our dashboard. Prince's ability to make complex data feel intuitive and beautiful is a rare and extraordinary talent."</p>
+                <div class="testimonial-card__author">
+                  <div class="testimonial-card__avatar">AT</div>
+                  <div>
+                    <strong>Aria Thompson</strong>
+                    <span>Product Manager, Quantum Labs</span>
+                  </div>
+                </div>
+              </div>
+              <!-- Testimonial 6 -->
+              <div class="testimonial-card glass">
+                <div class="testimonial-card__stars">★★★★★</div>
+                <p class="testimonial-card__text">"The e-commerce experience Prince created drove a 40% conversion increase. His technical skills paired with design sensibility make him truly unique."</p>
+                <div class="testimonial-card__author">
+                  <div class="testimonial-card__avatar">MW</div>
+                  <div>
+                    <strong>Marcus Wei</strong>
+                    <span>Design Lead, Velvet Co</span>
+                  </div>
+                </div>
+              </div>
+              <!-- Duplicate set for infinite scroll -->
+              <div class="testimonial-card glass">
+                <div class="testimonial-card__stars">★★★★★</div>
+                <p class="testimonial-card__text">"Prince transformed our digital presence completely. The attention to detail and animation quality is unlike anything we've seen. Our engagement increased by 300%."</p>
+                <div class="testimonial-card__author">
+                  <div class="testimonial-card__avatar">SM</div>
+                  <div>
+                    <strong>Sarah Mitchell</strong>
+                    <span>CEO, Nocturne Studio</span>
+                  </div>
+                </div>
+              </div>
+              <div class="testimonial-card glass">
+                <div class="testimonial-card__stars">★★★★★</div>
+                <p class="testimonial-card__text">"Working with Prince was a revelation. He brought a level of craft and performance optimization that exceeded all expectations. Truly world-class work."</p>
+                <div class="testimonial-card__author">
+                  <div class="testimonial-card__avatar">JC</div>
+                  <div>
+                    <strong>James Chen</strong>
+                    <span>CTO, TechVault</span>
+                  </div>
+                </div>
+              </div>
+              <div class="testimonial-card glass">
+                <div class="testimonial-card__stars">★★★★★</div>
+                <p class="testimonial-card__text">"The portfolio Prince built for us won an Awwwards honorable mention. His understanding of motion design and web performance is unparalleled."</p>
+                <div class="testimonial-card__author">
+                  <div class="testimonial-card__avatar">ER</div>
+                  <div>
+                    <strong>Elena Rodriguez</strong>
+                    <span>Creative Director, Orbit Agency</span>
+                  </div>
+                </div>
+              </div>
+              <div class="testimonial-card glass">
+                <div class="testimonial-card__stars">★★★★★</div>
+                <p class="testimonial-card__text">"Prince doesn't just build websites — he crafts experiences. Every micro-interaction feels intentional and premium. Highly recommend for any serious brand."</p>
+                <div class="testimonial-card__author">
+                  <div class="testimonial-card__avatar">DP</div>
+                  <div>
+                    <strong>David Park</strong>
+                    <span>Founder, Signal House</span>
+                  </div>
+                </div>
+              </div>
+              <div class="testimonial-card glass">
+                <div class="testimonial-card__stars">★★★★★</div>
+                <p class="testimonial-card__text">"Exceptional work on our dashboard. Prince's ability to make complex data feel intuitive and beautiful is a rare and extraordinary talent."</p>
+                <div class="testimonial-card__author">
+                  <div class="testimonial-card__avatar">AT</div>
+                  <div>
+                    <strong>Aria Thompson</strong>
+                    <span>Product Manager, Quantum Labs</span>
+                  </div>
+                </div>
+              </div>
+              <div class="testimonial-card glass">
+                <div class="testimonial-card__stars">★★★★★</div>
+                <p class="testimonial-card__text">"The e-commerce experience Prince created drove a 40% conversion increase. His technical skills paired with design sensibility make him truly unique."</p>
+                <div class="testimonial-card__author">
+                  <div class="testimonial-card__avatar">MW</div>
+                  <div>
+                    <strong>Marcus Wei</strong>
+                    <span>Design Lead, Velvet Co</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ─── CONTACT ─── -->
+        <section class="contact section" id="contact">
+          <div class="container">
+            <div class="section-header">
+              <span class="kicker reveal-up">Get In Touch</span>
+              <h2 class="heading-section reveal-up">Let's Build Something<br/>Extraordinary Together</h2>
+            </div>
+
+            <div class="contact__grid">
+              <!-- Left: Info -->
+              <div class="contact__info reveal-up">
+                <p class="contact__intro">
+                  Have a project in mind? I'd love to hear about it. Let's discuss how we can create
+                  something memorable.
+                </p>
+
+                <div class="contact__details">
+                  <div class="contact__detail">
+                    <span class="contact__detail-label">Email</span>
+                    <a href="mailto:hello@princekumar.dev" class="contact__detail-value">hello@princekumar.dev</a>
+                  </div>
+                  <div class="contact__detail">
+                    <span class="contact__detail-label">Location</span>
+                    <span class="contact__detail-value">India, Available Worldwide</span>
+                  </div>
+                  <div class="contact__detail">
+                    <span class="contact__detail-label">Availability</span>
+                    <span class="contact__detail-value">
+                      <span class="pulse-dot"></span> Open for Projects
+                    </span>
+                  </div>
+                </div>
+
+                <div class="contact__socials">
+                  <a href="https://github.com/princekumar" target="_blank" rel="noopener" class="contact__social magnetic" aria-label="GitHub">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                  </a>
+                  <a href="https://linkedin.com/in/princekumar" target="_blank" rel="noopener" class="contact__social magnetic" aria-label="LinkedIn">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                  </a>
+                  <a href="https://twitter.com/princekumar" target="_blank" rel="noopener" class="contact__social magnetic" aria-label="Twitter">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                  </a>
+                  <a href="https://dribbble.com/princekumar" target="_blank" rel="noopener" class="contact__social magnetic" aria-label="Dribbble">
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 24C5.385 24 0 18.615 0 12S5.385 0 12 0s12 5.385 12 12-5.385 12-12 12zm10.12-10.358c-.35-.11-3.17-.953-6.384-.438 1.34 3.684 1.887 6.684 1.992 7.308 2.3-1.555 3.936-4.02 4.395-6.87zm-6.115 7.808c-.153-.9-.75-4.032-2.19-7.77l-.066.02c-5.79 2.015-7.86 6.025-8.04 6.4 1.73 1.358 3.92 2.166 6.29 2.166 1.42 0 2.77-.29 4-.816zm-11.62-2.58c.232-.4 3.045-5.055 8.332-6.765.135-.045.27-.084.405-.12-.26-.585-.54-1.167-.832-1.74C7.17 11.775 2.206 11.71 1.756 11.7l-.004.312c0 2.633.998 5.037 2.634 6.855zm-2.42-8.955c.46.008 4.683.026 9.477-1.248-1.698-3.018-3.53-5.558-3.8-5.928-2.868 1.35-5.01 3.99-5.676 7.17zm7.56-7.872c.29.394 2.16 2.91 3.83 5.99 3.646-1.365 5.19-3.44 5.373-3.702-2.006-1.782-4.638-2.862-7.53-2.862-.576 0-1.14.048-1.67.137v.438zm9.96 3.462c-.21.29-1.9 2.49-5.69 4.02.27.545.518 1.1.748 1.66.083.194.165.39.244.584 3.465-.435 6.91.263 7.248.338-.03-2.44-.884-4.68-2.55-6.6z"/></svg>
+                  </a>
+                </div>
+              </div>
+
+              <!-- Right: Form -->
+              <form class="contact__form glass reveal-up" id="contact-form" novalidate>
+                <div class="form-group">
+                  <input type="text" id="name" name="name" required placeholder=" " autocomplete="name" />
+                  <label for="name">Your Name</label>
+                </div>
+                <div class="form-group">
+                  <input type="email" id="email" name="email" required placeholder=" " autocomplete="email" />
+                  <label for="email">Your Email</label>
+                </div>
+                <div class="form-group">
+                  <input type="text" id="subject" name="subject" required placeholder=" " />
+                  <label for="subject">Subject</label>
+                </div>
+                <div class="form-group">
+                  <textarea id="message" name="message" rows="5" required placeholder=" "></textarea>
+                  <label for="message">Your Message</label>
+                </div>
+                <button type="submit" class="btn btn--primary btn--full magnetic" id="submit-btn">
+                  <span class="btn__text">Send Message</span>
+                  <span class="btn__loading">Sending...</span>
+                  <span class="btn__success">Sent! ✓</span>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12h14m0 0l-6-6m6 6l-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+              </form>
+            </div>
+          </div>
+        </section>
+
+        <!-- ─── FOOTER ─── -->
+        <footer class="footer" id="footer">
+          <!-- Glow -->
+          <div class="footer__glow" aria-hidden="true"></div>
+          <!-- Watermark -->
+          <div class="footer__watermark" aria-hidden="true">PRINCE</div>
+
+          <div class="container">
+            <div class="footer__top">
+              <div class="footer__brand">
+                <a href="#hero" class="nav__brand">
+                  <span class="nav__brand-text">PRINCE</span><span class="nav__brand-dot">.</span>
+                </a>
+                <p class="footer__tagline">Crafting cinematic digital experiences that blur the line between art and technology.</p>
+              </div>
+
+              <div class="footer__nav">
+                <h4 class="footer__heading">Navigation</h4>
+                <a href="#about">About</a>
+                <a href="#skills">Skills</a>
+                <a href="#projects">Projects</a>
+                <a href="#services">Services</a>
+                <a href="#contact">Contact</a>
+              </div>
+
+              <div class="footer__connect">
+                <h4 class="footer__heading">Connect</h4>
+                <a href="https://github.com/princekumar" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://linkedin.com/in/princekumar" target="_blank" rel="noopener">LinkedIn</a>
+                <a href="https://twitter.com/princekumar" target="_blank" rel="noopener">Twitter</a>
+                <a href="https://dribbble.com/princekumar" target="_blank" rel="noopener">Dribbble</a>
+              </div>
+            </div>
+
+            <div class="footer__bottom">
+              <span>&copy; 2026 Prince Kumar. All rights reserved.</span>
+              <button class="footer__top-btn magnetic" id="back-to-top" aria-label="Back to top">
+                Back to Top ↑
+              </button>
             </div>
           </div>
         </footer>
+
       </div>
     </main>
 
-    <!-- Dependencies: Three.js, Lenis, GSAP -->
-    <script
-      src="https://unpkg.com/three@0.160.0/build/three.min.js"
-    ></script>
-    <script
-      src="https://unpkg.com/@studio-freight/lenis@1.0.33/dist/lenis.min.js"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/gsap.min.js"
-    ></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.4/ScrollTrigger.min.js"
-    ></script>
-    <script src="js/javascript.js"></script>
+    <!-- ═══════════ SCRIPTS ═══════════ -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+    <script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+    <script src="js/script.js"></script>
   </body>
 </html>
