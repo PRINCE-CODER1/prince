@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Veda Care | Premium Ayurvedic Medicine</title>
+  <meta name="description" content="Ancient Ayurvedic Wisdom for Modern Living. Premium, doctor-formulated natural medicines for holistic healing.">
+  <meta name="theme-color" content="#1C2D27">
+  
+  <!-- Premium Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="loading">
+
+  <!-- ═══════════ PRELOADER ═══════════ -->
+  <div class="preloader">
+    <div class="preloader__logo">Veda Care</div>
+    <div class="preloader__bar"><div class="preloader__progress"></div></div>
+  </div>
+
+  <!-- ═══════════ BACKGROUND ELEMENTS ═══════════ -->
+  <div class="bg-elements" aria-hidden="true">
+    <div class="bg-glow bg-glow--1"></div>
+    <div class="bg-glow bg-glow--2"></div>
+    <div class="bg-glow bg-glow--3"></div>
+  </div>
+
+  <!-- ═══════════ NAVIGATION ═══════════ -->
+  <nav class="nav" id="main-nav">
+    <div class="container nav__container">
+      <div class="nav__brand">
+        <a href="#hero">Veda Care</a>
+      </div>
+      
+      <div class="nav__links">
+        <a href="#story" class="nav__link">Our Story</a>
+        <a href="#products" class="nav__link">Shop</a>
+        <a href="#categories" class="nav__link">Categories</a>
+        <a href="#testimonials" class="nav__link">Reviews</a>
+      </div>
+      
+      <div class="nav__actions">
+        <button class="nav__action-btn" aria-label="Search" title="Search">
+          <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="1.5" fill="none"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        </button>
+        <button class="nav__action-btn" aria-label="Cart" title="Cart" onclick="document.body.classList.add('cart-open')">
+          <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="1.5" fill="none"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+          <span class="cart-badge">2</span>
+        </button>
+        <a href="#consultation" class="btn btn--primary btn--sm">Book Consultation</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ═══════════ CART DRAWER ═══════════ -->
+  <div class="cart-overlay" onclick="document.body.classList.remove('cart-open')"></div>
+  <aside class="cart-drawer">
+    <div class="cart-drawer__header">
+      <h3>Your Cart</h3>
+      <button class="cart-drawer__close" onclick="document.body.classList.remove('cart-open')">
+        <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="1.5" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </div>
+    <div class="cart-drawer__items">
+      <!-- Item 1 -->
+      <div class="cart-item">
+        <img src="images/herbs_collection_1784539652170.png" alt="Ashwagandha Gold" class="cart-item__img">
+        <div class="cart-item__info">
+          <h4>Ashwagandha Gold</h4>
+          <p>Stress Relief</p>
+          <div class="cart-item__price">$35.00</div>
+          <div class="qty-control">
+            <button>-</button><span>1</span><button>+</button>
+          </div>
+        </div>
+      </div>
+      <!-- Item 2 -->
+      <div class="cart-item">
+        <img src="images/herbs_collection_1784539652170.png" alt="Triphala Extract" class="cart-item__img">
+        <div class="cart-item__info">
+          <h4>Triphala Extract</h4>
+          <p>Digestive Care</p>
+          <div class="cart-item__price">$28.00</div>
+          <div class="qty-control">
+            <button>-</button><span>1</span><button>+</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="cart-drawer__footer">
+      <div class="cart-drawer__total">
+        <span>Subtotal</span>
+        <span>$63.00</span>
+      </div>
+      <button class="btn btn--primary btn--full">Secure Checkout</button>
+    </div>
+  </aside>
+
+  <main id="smooth-wrapper">
+    <div id="smooth-content">
+
+      <!-- ═══════════ HERO SECTION ═══════════ -->
+      <section class="hero" id="hero">
+        <div class="hero__bg">
+          <img src="images/hero_herbs_1784539622877.png" alt="Ayurvedic Herbs" class="hero__bg-img" data-speed="0.8">
+          <div class="hero__bg-overlay"></div>
+        </div>
+        
+        <div class="container hero__container">
+          <div class="hero__content">
+            <div class="badge badge--glass reveal-fade">Dr. Sharma's Clinic</div>
+            <h1 class="heading-display reveal-text">
+              <span class="word-wrap"><span class="word">Heal</span></span>
+              <span class="word-wrap"><span class="word">Naturally.</span></span><br>
+              <span class="word-wrap"><span class="word">Live</span></span>
+              <span class="word-wrap"><span class="word">Better.</span></span>
+            </h1>
+            <p class="hero__desc reveal-fade">
+              Ancient Ayurvedic wisdom meets modern healthcare. 
+              Authentic, doctor-formulated natural medicines for holistic healing and balance.
+            </p>
+            <div class="hero__actions reveal-fade">
+              <a href="#products" class="btn btn--primary magnetic">Shop Medicines</a>
+              <a href="#consultation" class="btn btn--outline magnetic">Book Consultation</a>
+            </div>
+            
+            <div class="trust-badges reveal-fade">
+              <div class="trust-badge"><span class="trust-icon">✔</span> 100% Ayurvedic</div>
+              <div class="trust-badge"><span class="trust-icon">✔</span> Doctor Formulated</div>
+              <div class="trust-badge"><span class="trust-icon">✔</span> GMP Certified</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════ STORY SECTION ═══════════ -->
+      <section class="story section" id="story">
+        <div class="container">
+          <div class="story__grid">
+            <div class="story__image-col reveal-slide">
+              <div class="image-glass-frame">
+                <img src="images/doctor_portrait_1784539643043.png" alt="Dr. Sharma" class="img-fluid rounded">
+              </div>
+              <div class="experience-badge glass-card">
+                <strong>25+</strong>
+                <span>Years of<br>Healing</span>
+              </div>
+            </div>
+            
+            <div class="story__content reveal-slide">
+              <span class="kicker">Our Heritage</span>
+              <h2 class="heading-lg">Rooted in ancient wisdom, proven by time.</h2>
+              <p class="text-lead">
+                "My journey in Ayurveda began 25 years ago in the foothills of the Himalayas, learning from master physicians. I realized that modern lifestyle diseases require ancient holistic solutions."
+              </p>
+              <p>
+                At Veda Care, we don't just treat symptoms; we treat the root cause. Every medicine is formulated in our GMP-certified facility using sustainably sourced herbs, adhering strictly to classical Ayurvedic texts. Our mission is to make authentic Ayurveda accessible to the modern world without compromising its purity.
+              </p>
+              
+              <div class="timeline-mini mt-4">
+                <div class="timeline-item">
+                  <div class="timeline-dot"></div>
+                  <h4>BAMS Degree</h4>
+                  <p>Graduated with honors in Ayurvedic Medicine</p>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-dot"></div>
+                  <h4>Founded Veda Care</h4>
+                  <p>Started the clinic to serve local patients</p>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-dot"></div>
+                  <h4>Global Reach</h4>
+                  <p>Shipping authentic medicines worldwide</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════ WHY AYURVEDA ═══════════ -->
+      <section class="why-ayurveda section bg-light" id="why">
+        <div class="container">
+          <div class="section-header text-center">
+            <span class="kicker">Holistic Healing</span>
+            <h2 class="heading-lg">Why Choose Ayurveda?</h2>
+            <p class="text-center max-w-600 mx-auto">It's not an alternative medicine; it's a complete science of life that brings harmony to your body, mind, and spirit.</p>
+          </div>
+          
+          <div class="cards-grid-4">
+            <div class="info-card glass-card reveal-slide">
+              <div class="info-card__icon">🌿</div>
+              <h3>Balance Doshas</h3>
+              <p>Identifies and corrects the root imbalance of Vata, Pitta, or Kapha rather than suppressing symptoms.</p>
+            </div>
+            <div class="info-card glass-card reveal-slide">
+              <div class="info-card__icon">✨</div>
+              <h3>Natural Healing</h3>
+              <p>Utilizes the intelligence of nature to awaken the body's innate ability to heal itself.</p>
+            </div>
+            <div class="info-card glass-card reveal-slide">
+              <div class="info-card__icon">🛡️</div>
+              <h3>Improves Immunity</h3>
+              <p>Builds Ojas (vitality) to strengthen natural defenses against diseases and stress.</p>
+            </div>
+            <div class="info-card glass-card reveal-slide">
+              <div class="info-card__icon">🌱</div>
+              <h3>No Harsh Chemicals</h3>
+              <p>100% plant-based formulations with zero synthetic additives, safe for long-term wellness.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════ FEATURED PRODUCTS ═══════════ -->
+      <section class="products section" id="products">
+        <div class="container">
+          <div class="section-header d-flex justify-between align-center">
+            <div>
+              <span class="kicker">Apothecary</span>
+              <h2 class="heading-lg">Doctor Formulated Medicines</h2>
+            </div>
+            <a href="#" class="btn-link">View All Products &rarr;</a>
+          </div>
+          
+          <div class="products-grid">
+            <!-- Product 1 -->
+            <div class="product-card glass-card reveal-up">
+              <div class="product-badge">Best Seller</div>
+              <div class="product-img-wrap">
+                <img src="images/herbs_collection_1784539652170.png" alt="Ashwagandha Gold" class="product-img">
+                <div class="product-actions">
+                  <button class="btn btn--sm btn--primary">Quick View</button>
+                  <button class="btn-icon">♡</button>
+                </div>
+              </div>
+              <div class="product-content">
+                <div class="product-rating">★★★★★ <span>(124)</span></div>
+                <h3 class="product-title">Ashwagandha Gold</h3>
+                <p class="product-desc">Reduces stress, anxiety, and boosts stamina naturally.</p>
+                <div class="product-meta">
+                  <span class="price">$35.00</span>
+                  <button class="btn-add-cart" onclick="document.body.classList.add('cart-open')">Add to Cart</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Product 2 -->
+            <div class="product-card glass-card reveal-up">
+              <div class="product-badge product-badge--new">New Arrival</div>
+              <div class="product-img-wrap">
+                <img src="images/herbs_collection_1784539652170.png" alt="Triphala Extract" class="product-img">
+                <div class="product-actions">
+                  <button class="btn btn--sm btn--primary">Quick View</button>
+                  <button class="btn-icon">♡</button>
+                </div>
+              </div>
+              <div class="product-content">
+                <div class="product-rating">★★★★☆ <span>(89)</span></div>
+                <h3 class="product-title">Triphala Extract</h3>
+                <p class="product-desc">Gentle daily detox, digestion support, and colon cleanse.</p>
+                <div class="product-meta">
+                  <span class="price">$28.00</span>
+                  <button class="btn-add-cart" onclick="document.body.classList.add('cart-open')">Add to Cart</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Product 3 -->
+            <div class="product-card glass-card reveal-up">
+              <div class="product-badge product-badge--rec">Dr. Recommended</div>
+              <div class="product-img-wrap">
+                <img src="images/herbs_collection_1784539652170.png" alt="Brahmi Mind" class="product-img">
+                <div class="product-actions">
+                  <button class="btn btn--sm btn--primary">Quick View</button>
+                  <button class="btn-icon">♡</button>
+                </div>
+              </div>
+              <div class="product-content">
+                <div class="product-rating">★★★★★ <span>(210)</span></div>
+                <h3 class="product-title">Brahmi Mind Focus</h3>
+                <p class="product-desc">Enhances memory, cognitive function, and mental clarity.</p>
+                <div class="product-meta">
+                  <span class="price">$42.00</span>
+                  <button class="btn-add-cart" onclick="document.body.classList.add('cart-open')">Add to Cart</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════ CATEGORIES ═══════════ -->
+      <section class="categories section bg-dark text-light" id="categories">
+        <div class="container">
+          <div class="section-header text-center">
+            <span class="kicker text-gold">Shop by Concern</span>
+            <h2 class="heading-lg">Targeted Health Solutions</h2>
+          </div>
+          
+          <div class="category-grid">
+            <a href="#" class="cat-card reveal-scale">
+              <div class="cat-icon">🌿</div>
+              <h3>Digestive Care</h3>
+            </a>
+            <a href="#" class="cat-card reveal-scale">
+              <div class="cat-icon">🦴</div>
+              <h3>Joint Care</h3>
+            </a>
+            <a href="#" class="cat-card reveal-scale">
+              <div class="cat-icon">🛡️</div>
+              <h3>Immunity</h3>
+            </a>
+            <a href="#" class="cat-card reveal-scale">
+              <div class="cat-icon">🌸</div>
+              <h3>Women's Health</h3>
+            </a>
+            <a href="#" class="cat-card reveal-scale">
+              <div class="cat-icon">⚡</div>
+              <h3>Men's Health</h3>
+            </a>
+            <a href="#" class="cat-card reveal-scale">
+              <div class="cat-icon">🩸</div>
+              <h3>Diabetes Support</h3>
+            </a>
+            <a href="#" class="cat-card reveal-scale">
+              <div class="cat-icon">✨</div>
+              <h3>Skin Care</h3>
+            </a>
+            <a href="#" class="cat-card reveal-scale">
+              <div class="cat-icon">🧘‍♂️</div>
+              <h3>Stress Relief</h3>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════ INGREDIENT SHOWCASE ═══════════ -->
+      <section class="ingredients section" id="ingredients">
+        <div class="container">
+          <div class="section-header">
+            <span class="kicker">Materia Medica</span>
+            <h2 class="heading-lg">The Power of Nature</h2>
+            <p>We source the most potent, authentic herbs directly from organic farmers.</p>
+          </div>
+        </div>
+        
+        <!-- Horizontal Scroll Section -->
+        <div class="ingredients-scroll-wrapper">
+          <div class="ingredients-track" id="ingredients-track">
+            
+            <div class="ingredient-card glass-card">
+              <img src="images/herbs_collection_1784539652170.png" alt="Ashwagandha" class="ingredient-img">
+              <div class="ingredient-info">
+                <h3>Ashwagandha</h3>
+                <p class="botanical-name">Withania somnifera</p>
+                <p>The ultimate adaptogen. Helps the body manage stress, lowers cortisol, and boosts energy.</p>
+              </div>
+            </div>
+
+            <div class="ingredient-card glass-card">
+              <img src="images/herbs_collection_1784539652170.png" alt="Tulsi" class="ingredient-img">
+              <div class="ingredient-info">
+                <h3>Holy Basil (Tulsi)</h3>
+                <p class="botanical-name">Ocimum tenuiflorum</p>
+                <p>The Queen of Herbs. Highly purifying, supports respiratory health and natural immunity.</p>
+              </div>
+            </div>
+
+            <div class="ingredient-card glass-card">
+              <img src="images/herbs_collection_1784539652170.png" alt="Turmeric" class="ingredient-img">
+              <div class="ingredient-info">
+                <h3>Turmeric (Haldi)</h3>
+                <p class="botanical-name">Curcuma longa</p>
+                <p>Nature's most powerful anti-inflammatory. Supports joint health, skin glow, and immunity.</p>
+              </div>
+            </div>
+            
+            <div class="ingredient-card glass-card">
+              <img src="images/herbs_collection_1784539652170.png" alt="Amla" class="ingredient-img">
+              <div class="ingredient-info">
+                <h3>Amla</h3>
+                <p class="botanical-name">Phyllanthus emblica</p>
+                <p>Richest natural source of Vitamin C. A powerful antioxidant for hair, eyes, and digestion.</p>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════ DOCTOR ROUTINES ═══════════ -->
+      <section class="routines section bg-light" id="routines">
+        <div class="container">
+          <div class="section-header text-center">
+            <span class="kicker">Clinical Care</span>
+            <h2 class="heading-lg">Doctor Recommended Routines</h2>
+          </div>
+          
+          <div class="routines-grid">
+            <div class="routine-card reveal-up">
+              <div class="routine-time">☀️ Morning Routine</div>
+              <h3>Vitality &amp; Digestion</h3>
+              <p>Start your day with cleared toxins and boosted energy.</p>
+              <ul class="routine-list">
+                <li>Warm water with Triphala</li>
+                <li>Ashwagandha for sustained energy</li>
+              </ul>
+              <a href="#products" class="btn-link">Shop this routine &rarr;</a>
+            </div>
+            
+            <div class="routine-card reveal-up">
+              <div class="routine-time">🌙 Night Routine</div>
+              <h3>Deep Sleep &amp; Repair</h3>
+              <p>Calm the nervous system and promote cellular repair.</p>
+              <ul class="routine-list">
+                <li>Brahmi extract with warm milk</li>
+                <li>Stress-relief massage oil</li>
+              </ul>
+              <a href="#products" class="btn-link">Shop this routine &rarr;</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════ TESTIMONIALS ═══════════ -->
+      <section class="testimonials section" id="testimonials">
+        <div class="container">
+          <div class="section-header text-center">
+            <span class="kicker">Healing Stories</span>
+            <h2 class="heading-lg">Trusted by Thousands</h2>
+          </div>
+          
+          <div class="testimonials-grid">
+            <div class="testimonial-card glass-card reveal-slide">
+              <div class="stars">★★★★★</div>
+              <p class="quote">"I suffered from chronic acidity for years. Modern meds only offered temporary relief. Dr. Sharma's Triphala and diet guidance healed me completely in 3 months."</p>
+              <div class="author">
+                <div class="author-avatar">A</div>
+                <div class="author-info">
+                  <strong>Anjali Desai</strong>
+                  <span><span class="trust-icon">✔</span> Verified Patient</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="testimonial-card glass-card reveal-slide">
+              <div class="stars">★★★★★</div>
+              <p class="quote">"The Ashwagandha Gold is phenomenal. My sleep quality improved drastically, and I feel a sustained calm energy throughout the day. Authentic quality."</p>
+              <div class="author">
+                <div class="author-avatar">R</div>
+                <div class="author-info">
+                  <strong>Rajeev M.</strong>
+                  <span><span class="trust-icon">✔</span> Verified Buyer</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="testimonial-card glass-card reveal-slide">
+              <div class="stars">★★★★★</div>
+              <p class="quote">"Finally, an Ayurvedic brand that feels trustworthy. The packaging is premium, but more importantly, the medicine actually works. Highly recommend the Joint Care pack."</p>
+              <div class="author">
+                <div class="author-avatar">S</div>
+                <div class="author-info">
+                  <strong>Sarah Jenkins</strong>
+                  <span><span class="trust-icon">✔</span> Verified Buyer</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════ CONSULTATION ═══════════ -->
+      <section class="consultation section bg-dark text-light" id="consultation">
+        <div class="container">
+          <div class="consultation-inner glass-card reveal-scale">
+            <div class="consultation-content">
+              <span class="kicker text-gold">Expert Guidance</span>
+              <h2 class="heading-lg">Need a personalized treatment plan?</h2>
+              <p class="text-lead">Book a one-on-one video consultation with Dr. Sharma for a comprehensive Ayurvedic diagnosis (Nadi Pariksha) and customized herbal prescription.</p>
+              
+              <div class="consultation-options">
+                <div class="c-option">
+                  <span class="c-icon">💻</span>
+                  <div>
+                    <strong>Video Consultation</strong>
+                    <p>45 mins deep dive session</p>
+                  </div>
+                </div>
+                <div class="c-option">
+                  <span class="c-icon">🏥</span>
+                  <div>
+                    <strong>Clinic Visit</strong>
+                    <p>In-person pulse diagnosis</p>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="mt-4">
+                <a href="#" class="btn btn--primary magnetic">Book Appointment</a>
+                <a href="#" class="btn btn--outline ml-2 magnetic text-light border-light">WhatsApp Us</a>
+              </div>
+            </div>
+            <div class="consultation-image">
+              <img src="images/doctor_portrait_1784539643043.png" alt="Doctor Consultation" class="rounded">
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════ FAQ ═══════════ -->
+      <section class="faq section" id="faq">
+        <div class="container max-w-800">
+          <div class="section-header text-center">
+            <span class="kicker">Knowledge Base</span>
+            <h2 class="heading-lg">Frequently Asked Questions</h2>
+          </div>
+          
+          <div class="accordion">
+            <div class="accordion-item">
+              <button class="accordion-header">
+                Are these medicines safe for long-term use?
+                <span class="accordion-icon">+</span>
+              </button>
+              <div class="accordion-content">
+                <p>Yes. Our formulations are 100% natural, plant-based, and free from heavy metals or synthetic chemicals. They are designed to nourish the body and are safe for long-term use when taken as directed by the physician.</p>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <button class="accordion-header">
+                How long does it take to see results?
+                <span class="accordion-icon">+</span>
+              </button>
+              <div class="accordion-content">
+                <p>Ayurveda treats the root cause, not just symptoms. While some products like sleep aids or digestive powders show immediate relief, chronic conditions usually require 4 to 12 weeks of consistent use along with prescribed dietary changes.</p>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <button class="accordion-header">
+                Do you ship internationally?
+                <span class="accordion-icon">+</span>
+              </button>
+              <div class="accordion-content">
+                <p>Yes, we ship globally via DHL Express. Delivery usually takes 5-7 business days depending on customs regulations in your country.</p>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <button class="accordion-header">
+                Can I take these with modern allopathic medicines?
+                <span class="accordion-icon">+</span>
+              </button>
+              <div class="accordion-content">
+                <p>In most cases, yes, provided you maintain a gap of 1-2 hours between Ayurvedic and allopathic medicines. However, we strongly recommend booking a consultation to avoid any specific herb-drug interactions.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════ FOOTER ═══════════ -->
+      <footer class="footer bg-dark text-light">
+        <div class="container">
+          
+          <div class="trust-banner glass-card mb-5">
+            <div class="tb-item">
+              <strong>15k+</strong>
+              <span>Satisfied Patients</span>
+            </div>
+            <div class="tb-item">
+              <strong>100%</strong>
+              <span>Authentic Herbs</span>
+            </div>
+            <div class="tb-item">
+              <strong>Secure</strong>
+              <span>Checkout</span>
+            </div>
+            <div class="tb-item">
+              <strong>Global</strong>
+              <span>Fast Delivery</span>
+            </div>
+          </div>
+          
+          <div class="footer-grid">
+            <div class="footer-brand">
+              <h2 class="nav__brand">Veda Care</h2>
+              <p>Ancient Ayurvedic wisdom for modern living. Curated with care, formulated with precision, delivered with love.</p>
+              <div class="social-links mt-3">
+                <a href="#">IG</a>
+                <a href="#">FB</a>
+                <a href="#">YT</a>
+                <a href="#">WA</a>
+              </div>
+            </div>
+            
+            <div class="footer-links">
+              <h4>Shop</h4>
+              <ul>
+                <li><a href="#">All Medicines</a></li>
+                <li><a href="#">Digestive Care</a></li>
+                <li><a href="#">Immunity Boosters</a></li>
+                <li><a href="#">Stress &amp; Sleep</a></li>
+              </ul>
+            </div>
+            
+            <div class="footer-links">
+              <h4>Clinic</h4>
+              <ul>
+                <li><a href="#">Book Consultation</a></li>
+                <li><a href="#">Our Story</a></li>
+                <li><a href="#">Educational Blog</a></li>
+                <li><a href="#">Contact Us</a></li>
+              </ul>
+            </div>
+            
+            <div class="footer-newsletter">
+              <h4>Wellness in your Inbox</h4>
+              <p>Subscribe for seasonal health tips and exclusive offers.</p>
+              <form class="newsletter-form mt-2">
+                <input type="email" placeholder="Your email address" required>
+                <button type="submit" class="btn btn--primary">Subscribe</button>
+              </form>
+            </div>
+          </div>
+          
+          <div class="footer-bottom mt-5 text-center">
+            <p>&copy; 2026 Veda Care Clinic &amp; Apothecary. All rights reserved.</p>
+            <p class="text-sm mt-1">Disclaimer: The information provided is for educational purposes and should not be used for diagnosis or treatment without professional medical supervision.</p>
+          </div>
+        </div>
+      </footer>
+
+    </div>
+  </main>
+
+  <!-- GSAP & Lenis -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
