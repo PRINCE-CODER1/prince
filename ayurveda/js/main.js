@@ -11,6 +11,116 @@
 
   const isReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  /* ─── 0. CART MANAGER ───────────────────────────────────────────────────── */
+  class CartManager {
+    constructor() {
+      this.items = JSON.parse(localStorage.getItem('vedaCart')) || [];
+      this.initEventListeners();
+      this.updateUI();
+    }
+
+    save() {
+      localStorage.setItem('vedaCart', JSON.stringify(this.items));
+      this.updateUI();
+    }
+
+    add(id, name, price, img, quantity = 1) {
+      const existing = this.items.find(item => item.id === id);
+      if (existing) {
+        existing.quantity += quantity;
+      } else {
+        this.items.push({ id, name, price, img, quantity });
+      }
+      this.save();
+      document.body.classList.add('cart-open');
+    }
+
+    remove(id) {
+      this.items = this.items.filter(item => item.id !== id);
+      this.save();
+    }
+
+    updateQuantity(id, change) {
+      const item = this.items.find(i => i.id === id);
+      if (item) {
+        item.quantity += change;
+        if (item.quantity <= 0) this.remove(id);
+        else this.save();
+      }
+    }
+
+    updateUI() {
+      // Update Badges
+      const count = this.items.reduce((sum, item) => sum + item.quantity, 0);
+      document.querySelectorAll('.cart-badge').forEach(badge => {
+        badge.textContent = count;
+        badge.style.display = count > 0 ? 'flex' : 'none';
+      });
+
+      // Update Drawers/Cart Pages
+      const total = this.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      
+      document.querySelectorAll('.cart-drawer__items, .full-cart-items').forEach(container => {
+        if (this.items.length === 0) {
+          container.innerHTML = '<p style="padding: 24px; text-align: center; color: var(--c-text-lt);">Your cart is empty.</p>';
+          return;
+        }
+
+        container.innerHTML = this.items.map(item => `
+          <div class="cart-item">
+            <img src="${item.img}" alt="${item.name}" class="cart-item__img">
+            <div class="cart-item__info">
+              <h4>${item.name}</h4>
+              <div class="cart-item__price">$${item.price.toFixed(2)}</div>
+              <div class="qty-control mt-2">
+                <button type="button" onclick="window.cart.updateQuantity('${item.id}', -1)">-</button>
+                <span>${item.quantity}</span>
+                <button type="button" onclick="window.cart.updateQuantity('${item.id}', 1)">+</button>
+              </div>
+            </div>
+            <button class="btn-remove" onclick="window.cart.remove('${item.id}')" title="Remove">×</button>
+          </div>
+        `).join('');
+      });
+
+      document.querySelectorAll('.cart-drawer__total span:last-child, .cart-subtotal').forEach(el => {
+        el.textContent = '$' + total.toFixed(2);
+      });
+      
+      // Update checkout totals if they exist
+      const checkoutTotalEl = document.getElementById('checkout-total');
+      if (checkoutTotalEl) {
+        const tax = total * 0.05; // 5% tax
+        const shipping = total > 50 ? 0 : 10;
+        const grandTotal = total + tax + shipping;
+        
+        document.getElementById('checkout-subtotal').textContent = '$' + total.toFixed(2);
+        document.getElementById('checkout-tax').textContent = '$' + tax.toFixed(2);
+        document.getElementById('checkout-shipping').textContent = shipping === 0 ? 'FREE' : '$' + shipping.toFixed(2);
+        checkoutTotalEl.textContent = '$' + grandTotal.toFixed(2);
+      }
+    }
+
+    initEventListeners() {
+      // Listen for "Add to Cart" button clicks dynamically
+      document.addEventListener('click', (e) => {
+        if (e.target.closest('.btn-add-cart')) {
+          const btn = e.target.closest('.btn-add-cart');
+          const id = btn.getAttribute('data-id') || 'prod_' + Math.random().toString(36).substr(2, 9);
+          const name = btn.getAttribute('data-name') || 'Ayurvedic Product';
+          const price = parseFloat(btn.getAttribute('data-price')) || 0.00;
+          const img = btn.getAttribute('data-img') || 'images/herbs_collection_1784539652170.png';
+          
+          let qty = 1;
+          const qtyInput = document.getElementById('qty-input');
+          if (qtyInput) qty = parseInt(qtyInput.value) || 1;
+
+          this.add(id, name, price, img, qty);
+        }
+      });
+    }
+  }
+
   /* ─── 1. PRELOADER ──────────────────────────────────────────────────────── */
   function initPreloader() {
     const preloader = document.querySelector('.preloader');
@@ -291,6 +401,7 @@
 
   /* ─── 10. INIT ALL ──────────────────────────────────────────────────────── */
   function init() {
+    window.cart = new CartManager(); // Expose globally for inline onclicks
     initLenis();
     initNav();
     initFAQ();
