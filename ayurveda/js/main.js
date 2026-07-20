@@ -170,14 +170,17 @@
     updateUI() {
       const count = this.items.reduce((sum, item) => sum + item.quantity, 0);
       document.querySelectorAll('.cart-badge').forEach(badge => {
-        badge.textContent = count;
-        badge.style.display = count > 0 ? 'flex' : 'none';
+        if (badge) {
+          badge.textContent = count;
+          badge.style.display = count > 0 ? 'flex' : 'none';
+        }
       });
 
       const total = this.items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
       
       // Update Drawers
       document.querySelectorAll('.cart-drawer__items, .full-cart-items').forEach(container => {
+        if (!container) return;
         if (this.items.length === 0) {
           container.innerHTML = '<p style="padding: 24px; text-align: center; color: var(--c-text-lt);">Your cart is empty.</p>';
           return;
@@ -201,19 +204,20 @@
       });
 
       document.querySelectorAll('.cart-subtotal').forEach(el => {
-        el.textContent = '$' + total.toFixed(2);
+        if (el) el.textContent = '$' + total.toFixed(2);
       });
       
-      // Update Checkout totals
-      const checkoutTotalEl = document.getElementById('checkout-total');
-      if (checkoutTotalEl) {
-        const shipping = total > 50 || total === 0 ? 0 : 10;
-        const grandTotal = total + shipping;
-        
-        document.getElementById('checkout-subtotal').textContent = '$' + total.toFixed(2);
-        document.getElementById('checkout-shipping').textContent = shipping === 0 ? 'FREE' : '$' + shipping.toFixed(2);
-        checkoutTotalEl.textContent = '$' + grandTotal.toFixed(2);
-      }
+      // Update Checkout totals safely
+      const checkoutSubtotal = document.getElementById('checkout-subtotal');
+      const checkoutShipping = document.getElementById('checkout-shipping');
+      const checkoutTotal = document.getElementById('checkout-total');
+      
+      const shipping = total > 50 || total === 0 ? 0 : 10;
+      const grandTotal = total + shipping;
+      
+      if (checkoutSubtotal) checkoutSubtotal.textContent = '$' + total.toFixed(2);
+      if (checkoutShipping) checkoutShipping.textContent = shipping === 0 ? 'FREE' : '$' + shipping.toFixed(2);
+      if (checkoutTotal) checkoutTotal.textContent = '$' + grandTotal.toFixed(2);
     }
   }
 
@@ -320,11 +324,17 @@
     const prod = productsDB[id];
     if (!prod) return;
 
-    document.getElementById('dyn-prod-breadcrumb').textContent = prod.name;
-    document.getElementById('dyn-prod-title').textContent = prod.name;
-    document.getElementById('dyn-prod-price').textContent = '$' + prod.price.toFixed(2);
-    document.getElementById('dyn-prod-desc').textContent = prod.desc;
-    document.getElementById('main-product-img').src = prod.img;
+    const breadcrumb = document.getElementById('dyn-prod-breadcrumb');
+    const title = document.getElementById('dyn-prod-title');
+    const price = document.getElementById('dyn-prod-price');
+    const desc = document.getElementById('dyn-prod-desc');
+    const mainImg = document.getElementById('main-product-img');
+
+    if (breadcrumb) breadcrumb.textContent = prod.name;
+    if (title) title.textContent = prod.name;
+    if (price) price.textContent = '$' + prod.price.toFixed(2);
+    if (desc) desc.textContent = prod.desc;
+    if (mainImg) mainImg.src = prod.img;
 
     const addBtn = document.getElementById('dyn-prod-add-btn');
     if (addBtn) {
