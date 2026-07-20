@@ -6,7 +6,11 @@
   "use strict";
 
   // Register GSAP Plugins
-  gsap.registerPlugin(ScrollTrigger);
+  try {
+    gsap.registerPlugin(ScrollTrigger);
+  } catch(e) {
+    console.warn("GSAP plugins failed to register:", e);
+  }
   const isReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
   /* ─── 0. PRODUCT DATABASE ─────────────────────────────────────────────── */
@@ -83,20 +87,28 @@
       return;
     }
 
-    let percent = 0;
-    const interval = setInterval(() => {
-      percent += Math.random() * 25;
-      if (percent >= 100) {
-        percent = 100;
-        clearInterval(interval);
-        setTimeout(() => {
-          document.body.classList.remove('loading');
-          // Router handles view setup
-          handleRouting();
-        }, 500);
-      }
-      progress.style.width = percent + '%';
-    }, 80);
+    try {
+      let percent = 0;
+      const interval = setInterval(() => {
+        percent += Math.random() * 25;
+        if (percent >= 100) {
+          percent = 100;
+          clearInterval(interval);
+          setTimeout(() => {
+            document.body.classList.remove('loading');
+            try {
+              handleRouting();
+            } catch(routeErr) {
+              console.error("Routing error on load:", routeErr);
+            }
+          }, 500);
+        }
+        if (progress) progress.style.width = percent + '%';
+      }, 80);
+    } catch(e) {
+      document.body.classList.remove('loading');
+      console.error("Preloader thread crashed, fallback to load:", e);
+    }
   }
 
   /* ─── 3. SMOOTH SCROLL (LENIS) ──────────────────────────────────────────── */
@@ -104,14 +116,18 @@
   function initLenis() {
     if (isReducedMotion) return;
 
-    lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
-    });
+    try {
+      lenis = new Lenis({
+        duration: 1.2,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+      });
 
-    lenis.on('scroll', ScrollTrigger.update);
-    gsap.ticker.add((time) => lenis.raf(time * 1000));
-    gsap.ticker.lagSmoothing(0);
+      lenis.on('scroll', ScrollTrigger.update);
+      gsap.ticker.add((time) => lenis.raf(time * 1000));
+      gsap.ticker.lagSmoothing(0);
+    } catch(e) {
+      console.warn("Lenis library failed to initialize:", e);
+    }
   }
 
   /* ─── 4. CART MANAGER STATE ─────────────────────────────────────────────── */
@@ -428,47 +444,56 @@
   function initScrollAnimations() {
     if (isReducedMotion) return;
 
-    // Parallax Hero
-    gsap.to(".hero__bg-img", {
-      yPercent: 20,
-      ease: "none",
-      scrollTrigger: {
-        trigger: ".hero",
-        start: "top top",
-        end: "bottom top",
-        scrub: true
-      }
-    });
-
-    // Horizontal scroll ingredients
-    const track = document.getElementById('ingredients-track');
-    if (track) {
-      const getScrollAmount = () => track.scrollWidth - window.innerWidth + 48;
-
-      gsap.to(track, {
-        x: () => -getScrollAmount(),
+    try {
+      // Parallax Hero
+      gsap.to(".hero__bg-img", {
+        yPercent: 20,
         ease: "none",
         scrollTrigger: {
-          trigger: ".ingredients-scroll-wrapper",
-          start: "top 20%",
-          end: () => `+=${getScrollAmount()}`,
-          pin: true,
-          scrub: 1,
-          invalidateOnRefresh: true
+          trigger: ".hero",
+          start: "top top",
+          end: "bottom top",
+          scrub: true
         }
       });
+
+      // Horizontal scroll ingredients
+      const track = document.getElementById('ingredients-track');
+      if (track) {
+        const getScrollAmount = () => track.scrollWidth - window.innerWidth + 48;
+
+        gsap.to(track, {
+          x: () => -getScrollAmount(),
+          ease: "none",
+          scrollTrigger: {
+            trigger: ".ingredients-scroll-wrapper",
+            start: "top 20%",
+            end: () => `+=${getScrollAmount()}`,
+            pin: true,
+            scrub: 1,
+            invalidateOnRefresh: true
+          }
+        });
+      }
+    } catch(e) {
+      console.warn("Scroll animation initialization failed:", e);
     }
   }
 
   /* ─── 10. BOOTSTRAP ─────────────────────────────────────────────────────── */
   function init() {
-    window.cart = new CartManager();
-    initCursor();
-    initLenis();
-    initBookingCalendar();
-    initCheckoutForm();
-    initScrollAnimations();
-    initPreloader();
+    try {
+      window.cart = new CartManager();
+      initCursor();
+      initLenis();
+      initBookingCalendar();
+      initCheckoutForm();
+      initScrollAnimations();
+    } catch(err) {
+      console.error("Bootstrap sequence failed:", err);
+    } finally {
+      initPreloader();
+    }
 
     // Hash Navigation Listener
     window.addEventListener('hashchange', handleRouting);
