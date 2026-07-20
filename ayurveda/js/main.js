@@ -218,14 +218,86 @@
     createStagger('.routines-grid', '.reveal-up', 30);
   }
 
-  /* ─── 8. INIT ALL ───────────────────────────────────────────────────────── */
+  /* ─── 8. PRODUCT GALLERY & TABS ─────────────────────────────────────────── */
+  function initProductDetails() {
+    // Tabs
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabPanes = document.querySelectorAll('.tab-pane');
+    
+    tabBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Remove active class from all
+        tabBtns.forEach(b => b.classList.remove('active'));
+        tabPanes.forEach(p => p.classList.remove('active'));
+        
+        // Add active class to clicked
+        btn.classList.add('active');
+        const tabId = btn.getAttribute('data-tab');
+        document.getElementById(`tab-${tabId}`).classList.add('active');
+      });
+    });
+
+    // Gallery
+    const mainImg = document.getElementById('main-product-img');
+    const thumbs = document.querySelectorAll('.thumb');
+    
+    thumbs.forEach(thumb => {
+      thumb.addEventListener('click', () => {
+        thumbs.forEach(t => t.classList.remove('active'));
+        thumb.classList.add('active');
+        
+        // Update main image source (simulate swap)
+        const newSrc = thumb.querySelector('img').src;
+        mainImg.style.opacity = '0';
+        setTimeout(() => {
+          mainImg.src = newSrc;
+          mainImg.style.opacity = '1';
+        }, 300);
+      });
+    });
+  }
+
+  /* ─── 9. CONSULTATION CALENDAR ──────────────────────────────────────────── */
+  function initCalendar() {
+    const calDays = document.querySelectorAll('.cal-day:not(.disabled)');
+    const slotBtns = document.querySelectorAll('.slot-btn');
+    const typeCards = document.querySelectorAll('.c-type-card');
+    
+    // Day Selection
+    calDays.forEach(day => {
+      day.addEventListener('click', () => {
+        calDays.forEach(d => d.classList.remove('active'));
+        day.classList.add('active');
+        // In a real app, we would fetch slots for this day here
+      });
+    });
+    
+    // Slot Selection
+    slotBtns.forEach(slot => {
+      slot.addEventListener('click', () => {
+        slotBtns.forEach(s => s.classList.remove('active'));
+        slot.classList.add('active');
+      });
+    });
+    
+    // Type Selection
+    typeCards.forEach(card => {
+      card.addEventListener('click', () => {
+        typeCards.forEach(c => c.classList.remove('active'));
+        card.classList.add('active');
+      });
+    });
+  }
+
+  /* ─── 10. INIT ALL ──────────────────────────────────────────────────────── */
   function init() {
     initLenis();
     initNav();
     initFAQ();
     initMagnetic();
-    // Setup horizontal scroll before page is fully loaded to calculate widths correctly
     initHorizontalScroll();
+    initProductDetails();
+    initCalendar();
     initPreloader();
   }
 
