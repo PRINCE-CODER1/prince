@@ -121,6 +121,54 @@
     }
   }
 
+  /* ─── 0.5. PRODUCT DATABASE ─────────────────────────────────────────────── */
+  const productsDB = {
+    'prod_ashwa': {
+      name: 'Ashwagandha Gold',
+      price: 35.00,
+      img: 'images/herbs_collection_1784539652170.png',
+      desc: 'The ultimate adaptogen formula. Clinically proven to reduce cortisol levels, ease stress, and boost physical stamina naturally. Formulated with KSM-66® pure root extract.',
+      bullets: ['Lowers cortisol and manages stress.', 'Improves sleep quality and duration.', 'Enhances muscle strength and recovery.'],
+      ingredients: [
+        { name: 'Organic Ashwagandha Root (500mg)', desc: 'Pure root extract. Sourced from Rajasthan, India.' },
+        { name: 'Black Pepper Extract (5mg)', desc: 'Enhances absorption by up to 2000%.' }
+      ]
+    },
+    'prod_triphala': {
+      name: 'Triphala Extract',
+      price: 28.00,
+      img: 'images/herbs_collection_1784539652170.png',
+      desc: 'Gentle daily detox, digestion support, and colon cleanse. Formulated with equal parts Amalaki, Bibhitaki, and Haritaki.',
+      bullets: ['Relieves constipation naturally.', 'Improves gut health and digestion.', 'Rich in Vitamin C and antioxidants.'],
+      ingredients: [
+        { name: 'Amalaki (Phyllanthus emblica)', desc: 'Cooling antioxidant.' },
+        { name: 'Bibhitaki (Terminalia bellirica)', desc: 'Supports respiratory health.' },
+        { name: 'Haritaki (Terminalia chebula)', desc: 'The king of medicines for digestion.' }
+      ]
+    },
+    'prod_brahmi': {
+      name: 'Brahmi Mind Focus',
+      price: 42.00,
+      img: 'images/herbs_collection_1784539652170.png',
+      desc: 'Enhances memory, cognitive function, and mental clarity. A premium nootropic herb used for centuries by scholars and meditators.',
+      bullets: ['Improves focus and concentration.', 'Reduces brain fog.', 'Calms the nervous system.'],
+      ingredients: [
+        { name: 'Brahmi Extract (Bacopa monnieri)', desc: 'Standardized to 20% bacosides.' }
+      ]
+    },
+    'prod_liver': {
+      name: 'Liver Shield (Kutki)',
+      price: 48.00,
+      img: 'images/herbs_collection_1784539652170.png',
+      desc: 'Premium liver detox and regeneration formula. Protects the liver from toxins and supports healthy bile production.',
+      bullets: ['Detoxifies the liver naturally.', 'Supports healthy metabolism.', 'Improves skin health (reduces acne).'],
+      ingredients: [
+        { name: 'Kutki (Picrorhiza kurroa)', desc: 'Himalayan herb known for hepatoprotective properties.' },
+        { name: 'Bhringraj', desc: 'Rejuvenates the liver.' }
+      ]
+    }
+  };
+
   /* ─── 1. PRELOADER ──────────────────────────────────────────────────────── */
   function initPreloader() {
     const preloader = document.querySelector('.preloader');
@@ -365,6 +413,95 @@
         }, 300);
       });
     });
+
+    // Populate Dynamic Data from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get('id');
+    
+    if (productId && productsDB[productId]) {
+      const product = productsDB[productId];
+      
+      // Update DOM
+      document.title = product.name + ' | Veda Care';
+      document.getElementById('dyn-name').textContent = product.name;
+      document.getElementById('dyn-price').textContent = '$' + product.price.toFixed(2);
+      document.getElementById('dyn-desc').textContent = product.desc;
+      mainImg.src = product.img;
+      
+      // Update Add to cart button
+      const addBtn = document.getElementById('dyn-add-btn');
+      if (addBtn) {
+        addBtn.setAttribute('data-id', productId);
+        addBtn.setAttribute('data-name', product.name);
+        addBtn.setAttribute('data-price', product.price);
+        addBtn.setAttribute('data-img', product.img);
+        addBtn.textContent = `Add to Cart - $${product.price.toFixed(2)}`;
+      }
+
+      // Update Bullets
+      const bulletList = document.getElementById('dyn-bullets');
+      if (bulletList) {
+        bulletList.innerHTML = product.bullets.map(b => `<li>${b}</li>`).join('');
+      }
+
+      // Update Ingredients
+      const ingList = document.getElementById('dyn-ingredients');
+      if (ingList) {
+        ingList.innerHTML = product.ingredients.map(ing => `
+          <div class="ing-item">
+            <strong>${ing.name}</strong>
+            <p>${ing.desc}</p>
+          </div>
+        `).join('');
+      }
+    }
+  }
+
+  /* ─── 8.5 CHECKOUT HANDLER ─────────────────────────────────────────────── */
+  function initCheckout() {
+    const checkoutForm = document.getElementById('checkout-form');
+    if (checkoutForm) {
+      checkoutForm.addEventListener('submit', function(e) {
+        e.preventDefault(); // Stop normal form submit
+        
+        // Gather data
+        const fname = document.getElementById('chk-fname').value;
+        const lname = document.getElementById('chk-lname').value;
+        const address = document.getElementById('chk-address').value;
+        const city = document.getElementById('chk-city').value;
+        const card = document.getElementById('chk-card').value;
+        
+        // Get last 4 digits of card (if long enough)
+        const last4 = card.length >= 4 ? card.slice(-4) : 'XXXX';
+
+        // Save order data
+        const orderData = {
+          name: `${fname} ${lname}`,
+          address: `${address}, ${city}`,
+          card: last4
+        };
+        localStorage.setItem('vedaOrderData', JSON.stringify(orderData));
+        
+        // Redirect
+        window.location.href = 'success.html';
+      });
+    }
+
+    // Load Data on Success Page
+    const successDetails = document.getElementById('success-details');
+    if (successDetails) {
+      const data = JSON.parse(localStorage.getItem('vedaOrderData'));
+      if (data) {
+        successDetails.innerHTML = `
+          <div class="glass-card p-3 border mb-5 text-left">
+            <h3 class="mb-3">Shipping Details</h3>
+            <p><strong>Name:</strong> ${data.name}</p>
+            <p><strong>Address:</strong> ${data.address}</p>
+            <p><strong>Payment:</strong> Card ending in ${data.card}</p>
+          </div>
+        `;
+      }
+    }
   }
 
   /* ─── 9. CONSULTATION CALENDAR ──────────────────────────────────────────── */
@@ -408,6 +545,7 @@
     initMagnetic();
     initHorizontalScroll();
     initProductDetails();
+    initCheckout();
     initCalendar();
     initPreloader();
   }
