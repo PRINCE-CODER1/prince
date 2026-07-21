@@ -485,6 +485,17 @@
      8. CONTACT FORM
      ═══════════════════════════════════════════════════════════════════════ */
   function initContactForm() {
+    // --- CONFIGURATION ---
+    // Choose your method: "whatsapp" or "web3forms"
+    const SUBMIT_METHOD = "whatsapp";
+
+    // Your WhatsApp number (with country code, no "+" or spaces. e.g., "919876543210")
+    const WHATSAPP_PHONE = "+919056694172";
+
+    // Your Web3Forms Access Key (Get one free from https://web3forms.com)
+    const WEB3FORMS_ACCESS_KEY = "f796ca13-a300-4f87-a61b-c5c9c2569f8d";
+    // ---------------------
+
     const form = document.getElementById("contact-form");
     const submitBtn = document.getElementById("submit-btn");
 
@@ -506,18 +517,69 @@
 
       if (!valid) return;
 
-      // Simulate send
+      const nameVal = form.querySelector("#name").value.trim();
+      const emailVal = form.querySelector("#email").value.trim();
+      const subjectVal = form.querySelector("#subject").value.trim();
+      const messageVal = form.querySelector("#message").value.trim();
+
+      // Show loading state
       submitBtn.classList.add("loading");
 
-      setTimeout(() => {
-        submitBtn.classList.remove("loading");
-        submitBtn.classList.add("success");
-        form.reset();
+      if (SUBMIT_METHOD === "whatsapp") {
+        // Construct WhatsApp click-to-chat URL
+        const text = `*New Portfolio Message*\n\n` +
+          `• *Name:* ${nameVal}\n` +
+          `• *Email:* ${emailVal}\n` +
+          `• *Subject:* ${subjectVal}\n` +
+          `• *Message:* ${messageVal}`;
+
+        const whatsappUrl = `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(text)}`;
 
         setTimeout(() => {
-          submitBtn.classList.remove("success");
-        }, 3000);
-      }, 1500);
+          submitBtn.classList.remove("loading");
+          submitBtn.classList.add("success");
+          form.reset();
+
+          // Open WhatsApp link in a new tab
+          window.open(whatsappUrl, "_blank");
+
+          setTimeout(() => {
+            submitBtn.classList.remove("success");
+          }, 3000);
+        }, 1000);
+
+      } else if (SUBMIT_METHOD === "web3forms") {
+        // Submit using Web3Forms
+        const formData = new FormData(form);
+        formData.append("access_key", WEB3FORMS_ACCESS_KEY);
+
+        fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          body: formData
+        })
+          .then(async (response) => {
+            const json = await response.json();
+            if (response.status === 200) {
+              submitBtn.classList.remove("loading");
+              submitBtn.classList.add("success");
+              form.reset();
+            } else {
+              console.error(json);
+              alert(json.message || "Something went wrong during submission!");
+              submitBtn.classList.remove("loading");
+            }
+          })
+          .catch((error) => {
+            console.error(error);
+            alert("Failed to send message. Please check your internet connection.");
+            submitBtn.classList.remove("loading");
+          })
+          .finally(() => {
+            setTimeout(() => {
+              submitBtn.classList.remove("success");
+            }, 3000);
+          });
+      }
     });
   }
 
